@@ -57,12 +57,11 @@ export function Hero() {
 
         <motion.h1
           {...fadeUp(0.15)}
-          className="font-display font-bold text-[clamp(3.4rem,6.5vw,5.6rem)] text-dark leading-[1.04] tracking-tight mb-8"
+          className="font-display font-bold text-[clamp(2.8rem,5.5vw,5rem)] text-dark leading-[1.04] tracking-tight mb-8"
         >
-          Wir bauen
-          <br />
-          Ihr
-          <span className="block min-h-[1em]">
+          <span className="block">Wir bauen</span>
+          <span className="block whitespace-nowrap">
+            Ihr{" "}
             <Typewriter
               text={["schönes", "helles", "perfektes", "modernes", "zeitloses", "makelloses"]}
               speed={72}
@@ -74,7 +73,7 @@ export function Hero() {
               cursorClassName="ml-0.5 opacity-80"
             />
           </span>
-          Traumbad.
+          <span className="block">Traumbad.</span>
         </motion.h1>
 
         <motion.p
