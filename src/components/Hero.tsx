@@ -61,18 +61,19 @@ export function Hero() {
         >
           Wir bauen
           <br />
-          Ihr{" "}
-          <Typewriter
-            text={["schönes", "helles", "perfektes", "modernes", "zeitloses", "makelloses"]}
-            speed={72}
-            deleteSpeed={38}
-            waitTime={2200}
-            initialDelay={600}
-            className="text-teal italic"
-            cursorChar="_"
-            cursorClassName="ml-0.5 opacity-80"
-          />
-          <br />
+          Ihr
+          <span className="block min-h-[1em]">
+            <Typewriter
+              text={["schönes", "helles", "perfektes", "modernes", "zeitloses", "makelloses"]}
+              speed={72}
+              deleteSpeed={38}
+              waitTime={2200}
+              initialDelay={600}
+              className="text-teal italic"
+              cursorChar="_"
+              cursorClassName="ml-0.5 opacity-80"
+            />
+          </span>
           Traumbad.
         </motion.h1>
 
