@@ -11,7 +11,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion"
-import { ArrowRight, Phone, Check } from "lucide-react"
+import { ArrowRight, Phone } from "lucide-react"
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
@@ -49,12 +49,34 @@ const projekte = [
   },
 ]
 
-/* ── The journey: Planung → Übergabe, ending in the Festpreis promise ── */
-const schritte = [
-  { nr: "01", titel: "Planung", sub: "3D-Entwurf" },
-  { nr: "02", titel: "Sanierung", sub: "Eigenes Team" },
-  { nr: "03", titel: "Übergabe", sub: "Schlüsselfertig" },
-]
+function Thumb({
+  p,
+  active,
+  onClick,
+  className,
+}: {
+  p: (typeof projekte)[number]
+  active: boolean
+  onClick: () => void
+  className: string
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={`${p.label} anzeigen`}
+      aria-current={active}
+      className={[
+        "relative shrink-0 cursor-pointer overflow-hidden rounded-lg transition-all duration-300",
+        active
+          ? "opacity-100 ring-2 ring-teal ring-offset-2 ring-offset-[#F9F9F9]"
+          : "opacity-45 hover:opacity-85",
+        className,
+      ].join(" ")}
+    >
+      <Image src={p.src} alt={p.label} fill sizes="90px" className="object-cover" />
+    </button>
+  )
+}
 
 export function Hero() {
   const reduced = useReducedMotion() ?? false
@@ -95,16 +117,6 @@ export function Hero() {
   const cur = projekte[index]
   const nextFoto = projekte[(index + 1) % n]
 
-  /* gentle, reduced-motion-aware entrance */
-  const appear = (delay: number) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, scale: 0.6 },
-          animate: { opacity: 1, scale: 1 },
-          transition: { duration: 0.5, ease, delay },
-        }
-
   return (
     <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-[#F9F9F9] pt-[66px] lg:flex-row lg:items-stretch">
 
@@ -117,7 +129,7 @@ export function Hero() {
       </span>
 
       {/* ─────────── Left: editorial content ─────────── */}
-      <div className="relative z-10 flex w-full flex-col justify-center px-7 py-16 sm:px-16 lg:w-[44%] lg:px-20 lg:py-0">
+      <div className="relative z-10 flex w-full flex-col justify-center px-7 py-16 sm:px-16 lg:w-[42%] lg:px-16 lg:py-0 xl:px-20">
 
         {/* Kicker */}
         <motion.div
@@ -197,82 +209,41 @@ export function Hero() {
           </Link>
         </motion.div>
 
-        {/* Mobile process row (spine collapses to a horizontal stepper) */}
-        <div className="mt-11 lg:hidden">
-          <div className="flex items-stretch">
-            {schritte.map((s, i) => (
-              <div key={s.nr} className="flex flex-1 items-center">
-                <div className="flex flex-col items-center gap-1.5">
-                  <span className="flex h-4 w-4 items-center justify-center rounded-full border border-teal/50 bg-[#F9F9F9]">
-                    <span className="h-1.5 w-1.5 rounded-full bg-teal" />
-                  </span>
-                  <span className="font-mono text-[0.6rem] font-medium uppercase tracking-[0.12em] text-dark/60">
-                    {s.titel}
-                  </span>
-                </div>
-                <span className="mx-1 h-px flex-1 bg-dark/15" />
-              </div>
-            ))}
-            {/* Festpreis terminal */}
-            <div className="flex flex-col items-center gap-1.5">
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-teal text-white">
-                <Check className="h-2.5 w-2.5" strokeWidth={3} />
-              </span>
-              <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.12em] text-teal">
-                Festpreis
-              </span>
-            </div>
-          </div>
-          <p className="mt-3 font-mono text-[0.62rem] tracking-[0.04em] text-dark/40">
-            Ein Ablauf, ein Team, ein garantierter Preis.
-          </p>
-        </div>
+        {/* Trust line */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="mt-10 flex items-center gap-5 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dark/40"
+        >
+          <span><span className="text-teal">10+</span> Jahre</span>
+          <span className="h-3 w-px bg-dark/15" />
+          <span><span className="text-teal">100%</span> Festpreis</span>
+          <span className="h-3 w-px bg-dark/15" />
+          <span>Eigenes Team</span>
+        </motion.div>
       </div>
 
-      {/* ─────────── Middle: vertical process spine (desktop) ─────────── */}
-      <div className="relative z-10 hidden shrink-0 items-center px-6 lg:flex xl:px-8">
-        <div className="relative flex h-[360px] flex-col justify-between xl:h-[400px]">
-          {/* connecting line */}
-          <motion.span
-            aria-hidden
-            className="absolute left-[9px] top-2 bottom-2 w-0.5 origin-top bg-gradient-to-b from-teal/40 via-teal/30 to-teal"
-            initial={reduced ? false : { scaleY: 0 }}
-            animate={reduced ? undefined : { scaleY: 1 }}
-            transition={{ duration: 1, ease, delay: 0.6 }}
+      {/* ─────────── Middle: vertical project rail (desktop) ─────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease, delay: 0.7 }}
+        className="relative z-10 hidden shrink-0 flex-col items-center justify-center gap-3 px-4 lg:flex xl:px-6"
+      >
+        <span className="mb-1 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-dark/35 [writing-mode:vertical-rl] rotate-180">
+          Referenzen
+        </span>
+        {projekte.map((p, i) => (
+          <Thumb
+            key={p.src}
+            p={p}
+            active={i === index}
+            onClick={() => setIndex(i)}
+            className="h-[64px] w-[54px] xl:h-[74px] xl:w-[62px]"
           />
-
-          {schritte.map((s, i) => (
-            <motion.div key={s.nr} {...appear(0.8 + i * 0.16)} className="relative flex items-center gap-3.5">
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-                <span className="h-3 w-3 rounded-full border-2 border-teal/60 bg-[#F9F9F9]" />
-              </span>
-              <div className="leading-none">
-                <p className="font-mono text-[0.82rem] font-semibold text-dark">
-                  <span className="text-teal/60">{s.nr}</span> {s.titel}
-                </p>
-                <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-dark/40">
-                  {s.sub}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-
-          {/* Festpreis — the emphasized terminal node (replaces the old seal) */}
-          <motion.div {...appear(0.8 + schritte.length * 0.16)} className="relative flex items-center gap-3.5">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-teal text-white shadow-[0_0_0_4px_rgba(42,191,191,0.15)]">
-                <Check className="h-3 w-3" strokeWidth={3} />
-              </span>
-            </span>
-            <div className="leading-none">
-              <p className="font-display text-[0.98rem] font-bold text-dark">Festpreis garantiert</p>
-              <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-teal">
-                Schriftlich fixiert
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+        ))}
+      </motion.div>
 
       {/* ─────────── Right: living gallery ─────────── */}
       <div className="relative w-full flex-1">
@@ -280,7 +251,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease }}
-          className="relative flex h-full items-center justify-center px-7 pb-16 sm:px-16 lg:px-6 lg:pb-0 xl:px-10"
+          className="relative flex h-full flex-col items-center justify-center px-7 pb-12 sm:px-16 lg:px-6 lg:pb-0 xl:px-10"
           style={{ perspective: 1200 }}
           onMouseMove={onMove}
           onMouseEnter={() => setPaused(true)}
@@ -288,17 +259,19 @@ export function Hero() {
         >
           {/* Photo stack */}
           <motion.div
-            className="relative w-full max-w-[480px] lg:max-w-[540px]"
+            className="relative w-full max-w-[500px] lg:max-w-[560px]"
             style={reduced ? undefined : { rotateX: rotX, rotateY: rotY, x: transX, transformStyle: "preserve-3d" }}
           >
             {/* Depth card peeking behind */}
             <div
               aria-hidden
-              className="absolute -right-6 top-7 hidden aspect-[4/5] w-full overflow-hidden rounded-[2px] opacity-40 shadow-lg sm:block"
+              className="absolute -right-7 top-8 hidden w-full rounded-[22px] bg-white p-3 opacity-55 shadow-lg sm:block"
               style={{ transform: "translateZ(-40px) rotate(2.5deg)" }}
             >
-              <Image src={nextFoto.src} alt="" fill sizes="540px" className="object-cover" />
-              <div className="absolute inset-0 bg-[#F9F9F9]/30" />
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[14px] bg-dark">
+                <Image src={nextFoto.src} alt="" fill sizes="560px" className="object-cover" />
+                <div className="absolute inset-0 bg-[#F9F9F9]/25" />
+              </div>
             </div>
 
             {/* Front frame */}
@@ -311,9 +284,10 @@ export function Hero() {
                 if (info.offset.x < -60) go(1)
                 else if (info.offset.x > 60) go(-1)
               }}
-              className="relative aspect-[4/5] w-full cursor-grab overflow-hidden rounded-[2px] bg-dark shadow-2xl active:cursor-grabbing"
+              className="relative w-full cursor-grab rounded-[22px] bg-white p-3 shadow-2xl ring-1 ring-black/5 active:cursor-grabbing"
               style={{ transformStyle: "preserve-3d" }}
             >
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[14px] bg-dark">
               <AnimatePresence initial={false}>
                 <motion.div
                   key={index}
@@ -328,7 +302,7 @@ export function Hero() {
                     alt={`${cur.label} — Badsanierung in ${cur.ort}`}
                     fill
                     priority={index === 0}
-                    sizes="(max-width: 1024px) 90vw, 540px"
+                    sizes="(max-width: 1024px) 90vw, 560px"
                     className="object-cover"
                   />
                 </motion.div>
@@ -375,22 +349,20 @@ export function Hero() {
                   }
                 />
               </div>
+              </div>
             </motion.div>
           </motion.div>
 
-          {/* Index buttons */}
-          <div className="absolute bottom-5 right-7 z-30 flex items-center gap-2.5 sm:right-16 lg:right-6 xl:right-10">
-            {projekte.map((_, i) => (
-              <button
-                key={i}
+          {/* Mobile project rail (horizontal) */}
+          <div className="mt-5 flex items-center justify-center gap-2.5 lg:hidden">
+            {projekte.map((p, i) => (
+              <Thumb
+                key={p.src}
+                p={p}
+                active={i === index}
                 onClick={() => setIndex(i)}
-                aria-label={`Projekt ${i + 1} anzeigen`}
-                className="cursor-pointer font-mono text-[0.7rem] tracking-wider transition-colors duration-200"
-              >
-                <span className={i === index ? "text-teal" : "text-dark/30 hover:text-dark/55"}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </button>
+                className="h-12 w-12"
+              />
             ))}
           </div>
         </motion.div>
