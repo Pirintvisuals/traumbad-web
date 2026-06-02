@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Bricolage_Grotesque, Source_Sans_3 } from "next/font/google"
+import { Bricolage_Grotesque, Source_Sans_3, JetBrains_Mono } from "next/font/google"
 import { MotionProvider } from "@/components/MotionProvider"
 import "./globals.css"
 
@@ -15,6 +15,13 @@ const sourceSans = Source_Sans_3({
   variable: "--font-source",
   display: "swap",
   weight: ["400", "500", "600", "700"],
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+  weight: ["400", "500", "600"],
 })
 
 export const metadata: Metadata = {
@@ -45,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="de-AT"
-      className={`${bricolage.variable} ${sourceSans.variable}`}
+      className={`${bricolage.variable} ${sourceSans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen antialiased" suppressHydrationWarning>
         <MotionProvider>{children}</MotionProvider>

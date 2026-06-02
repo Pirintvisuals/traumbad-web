@@ -41,6 +41,7 @@
   --color-dark-surface: #242424;
   --font-display: var(--font-bricolage);
   --font-sans: var(--font-source);
+  --font-mono: var(--font-jetbrains);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 4px);
@@ -72,6 +73,15 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes floatDot {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes growBar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
