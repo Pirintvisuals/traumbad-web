@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -11,14 +11,31 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion"
-import { ArrowRight, Phone } from "lucide-react"
+import { ArrowRight, Phone, MoveHorizontal } from "lucide-react"
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
+type Projekt = {
+  src: string
+  label: string
+  ort: string
+  spec: string
+  type?: "ba"
+  vorher?: string
+  after?: string
+}
+
 /* ── Curated featured projects (the photos ARE the product) ── */
-const projekte = [
+const projekte: Projekt[] = [
   {
+    // Before/After comparison card.
+    // TODO: replace `vorher` with the REAL pre-renovation photo of this room.
+    // Right now `vorher` reuses the finished photo with a "worn" filter as a
+    // placeholder so the slider is demonstrable — do NOT publish as-is.
+    type: "ba",
     src: "/traumbad-eu-badsanierung-badezimmer-renovierung-31-525x696.jpg",
+    after: "/traumbad-eu-badsanierung-badezimmer-renovierung-31-525x696.jpg",
+    vorher: "/traumbad-eu-badsanierung-badezimmer-renovierung-31-525x696.jpg",
     label: "Komplettsanierung",
     ort: "Eisenstadt",
     spec: "9 m² · 18 Tage",
@@ -49,16 +66,115 @@ const projekte = [
   },
 ]
 
+/* ── Before/After slider ── */
+function VorherNachher({
+  vorher,
+  nachher,
+  alt,
+  reduced,
+  placeholder,
+  onInteract,
+}: {
+  vorher: string
+  nachher: string
+  alt: string
+  reduced: boolean
+  placeholder?: boolean
+  onInteract?: () => void
+}) {
+  const [pct, setPct] = useState(62)
+  const [dragging, setDragging] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  /* one-time auto-demo sweep so visitors notice it's interactive */
+  useEffect(() => {
+    if (reduced) return
+    const t1 = setTimeout(() => setPct(26), 650)
+    const t2 = setTimeout(() => setPct(52), 1550)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
+  }, [reduced])
+
+  const move = (clientX: number) => {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    setPct(Math.max(3, Math.min(97, ((clientX - r.left) / r.width) * 100)))
+  }
+
+  const slide = dragging ? "none" : "0.7s cubic-bezier(0.22,1,0.36,1)"
+
+  return (
+    <div
+      ref={ref}
+      className="absolute inset-0 touch-none select-none"
+      onPointerDown={(e) => {
+        e.currentTarget.setPointerCapture(e.pointerId)
+        setDragging(true)
+        onInteract?.()
+        move(e.clientX)
+      }}
+      onPointerMove={(e) => dragging && move(e.clientX)}
+      onPointerUp={() => setDragging(false)}
+      onPointerCancel={() => setDragging(false)}
+    >
+      {/* After (full) */}
+      <Image
+        src={nachher}
+        alt={alt}
+        fill
+        priority
+        sizes="(max-width: 1024px) 90vw, 560px"
+        className="object-cover"
+      />
+
+      {/* Before (clipped to the left of the handle) */}
+      <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pct}% 0 0)`, transition: `clip-path ${slide}` }}>
+        <Image
+          src={vorher}
+          alt=""
+          fill
+          sizes="(max-width: 1024px) 90vw, 560px"
+          className="object-cover"
+          style={placeholder ? { filter: "grayscale(0.7) brightness(0.8) contrast(0.95)" } : undefined}
+        />
+      </div>
+
+      {/* Labels */}
+      <span className="absolute left-3 top-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[0.56rem] font-semibold uppercase tracking-[0.14em] text-white/90 backdrop-blur-sm">
+        Vorher
+      </span>
+      <span className="absolute right-3 top-3 rounded-full bg-teal/90 px-2.5 py-1 font-mono text-[0.56rem] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+        Nachher
+      </span>
+
+      {/* Divider + handle */}
+      <div
+        className="absolute top-0 bottom-0 z-10 w-0.5 -translate-x-1/2 bg-white/90"
+        style={{ left: `${pct}%`, transition: `left ${slide}` }}
+      >
+        <div className="absolute left-1/2 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-dark shadow-lg ring-1 ring-black/10">
+          <MoveHorizontal className="h-4 w-4" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Thumb({
   p,
   active,
   onClick,
   className,
+  badge,
 }: {
-  p: (typeof projekte)[number]
+  p: Projekt
   active: boolean
   onClick: () => void
   className: string
+  badge?: string
 }) {
   return (
     <button
@@ -67,13 +183,16 @@ function Thumb({
       aria-current={active}
       className={[
         "relative shrink-0 cursor-pointer overflow-hidden rounded-lg transition-all duration-300",
-        active
-          ? "opacity-100 ring-2 ring-teal ring-offset-2 ring-offset-[#F9F9F9]"
-          : "opacity-45 hover:opacity-85",
+        active ? "opacity-100 ring-2 ring-teal ring-offset-2 ring-offset-[#F9F9F9]" : "opacity-45 hover:opacity-85",
         className,
       ].join(" ")}
     >
       <Image src={p.src} alt={p.label} fill sizes="90px" className="object-cover" />
+      {badge && (
+        <span className="absolute inset-x-0 bottom-0 bg-black/60 py-0.5 text-center font-mono text-[0.5rem] font-bold uppercase tracking-wider text-white">
+          {badge}
+        </span>
+      )}
     </button>
   )
 }
@@ -86,12 +205,16 @@ export function Hero() {
 
   const go = (dir: number) => setIndex((i) => (i + dir + n) % n)
 
-  /* Auto-advance */
+  const cur = projekte[index]
+  const nextFoto = projekte[(index + 1) % n]
+  const isBA = cur.type === "ba" && !!cur.vorher && !!cur.after
+
+  /* Auto-advance (paused on hover, while interacting, or on the slider card) */
   useEffect(() => {
-    if (reduced || paused) return
+    if (reduced || paused || isBA) return
     const t = setTimeout(() => setIndex((i) => (i + 1) % n), 5200)
     return () => clearTimeout(t)
-  }, [index, paused, reduced, n])
+  }, [index, paused, reduced, isBA, n])
 
   /* Cursor parallax on the photo stack */
   const px = useMotionValue(0)
@@ -114,11 +237,30 @@ export function Hero() {
     setPaused(false)
   }
 
-  const cur = projekte[index]
-  const nextFoto = projekte[(index + 1) % n]
-
   return (
     <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-[#F9F9F9] pt-[66px] lg:flex-row lg:items-stretch">
+
+      {/* Ambient depth — faint grid + soft teal glows so the warm-white isn't flat */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(28,28,28,0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(28,28,28,0.035) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 68% 45%, black, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 68% 45%, black, transparent 75%)",
+          }}
+        />
+        <div
+          className="absolute right-[-8%] top-1/2 h-[700px] w-[700px] -translate-y-1/2 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(42,191,191,0.12), transparent 65%)" }}
+        />
+        <div
+          className="absolute -left-[10%] bottom-[-12%] h-[460px] w-[460px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(42,191,191,0.06), transparent 70%)" }}
+        />
+      </div>
 
       {/* Editorial ghost number watermark */}
       <span
@@ -236,10 +378,11 @@ export function Hero() {
         </span>
         {projekte.map((p, i) => (
           <Thumb
-            key={p.src}
+            key={p.src + i}
             p={p}
             active={i === index}
             onClick={() => setIndex(i)}
+            badge={p.type === "ba" ? "V/N" : undefined}
             className="h-[64px] w-[54px] xl:h-[74px] xl:w-[62px]"
           />
         ))}
@@ -274,9 +417,9 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Front frame */}
+            {/* Front frame (matted card) */}
             <motion.div
-              drag={reduced ? false : "x"}
+              drag={reduced || isBA ? false : "x"}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.16}
               onDragStart={() => setPaused(true)}
@@ -284,71 +427,86 @@ export function Hero() {
                 if (info.offset.x < -60) go(1)
                 else if (info.offset.x > 60) go(-1)
               }}
-              className="relative w-full cursor-grab rounded-[22px] bg-white p-3 shadow-2xl ring-1 ring-black/5 active:cursor-grabbing"
+              className={[
+                "relative w-full rounded-[22px] bg-white p-3 shadow-2xl ring-1 ring-black/5",
+                isBA ? "" : "cursor-grab active:cursor-grabbing",
+              ].join(" ")}
               style={{ transformStyle: "preserve-3d" }}
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[14px] bg-dark">
-              <AnimatePresence initial={false}>
-                <motion.div
-                  key={index}
-                  initial={{ clipPath: "inset(0 0 0 100%)" }}
-                  animate={{ clipPath: "inset(0 0 0 0%)" }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: reduced ? 0 : 0.85, ease }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={cur.src}
+                {isBA ? (
+                  <VorherNachher
+                    vorher={cur.vorher!}
+                    nachher={cur.after!}
                     alt={`${cur.label} — Badsanierung in ${cur.ort}`}
-                    fill
-                    priority={index === 0}
-                    sizes="(max-width: 1024px) 90vw, 560px"
-                    className="object-cover"
+                    reduced={reduced}
+                    placeholder
+                    onInteract={() => setPaused(true)}
                   />
-                </motion.div>
-              </AnimatePresence>
+                ) : (
+                  <AnimatePresence initial={false}>
+                    <motion.div
+                      key={index}
+                      initial={{ clipPath: "inset(0 0 0 100%)" }}
+                      animate={{ clipPath: "inset(0 0 0 0%)" }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: reduced ? 0 : 0.85, ease }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src={cur.src}
+                        alt={`${cur.label} — Badsanierung in ${cur.ort}`}
+                        fill
+                        sizes="(max-width: 1024px) 90vw, 560px"
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                )}
 
-              {/* Gradient + caption */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent p-6 pt-16">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[0.62rem] font-semibold tracking-[0.2em] text-teal">
-                    PROJEKT N°{String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="h-px w-5 bg-white/30" />
-                  <span className="font-mono text-[0.62rem] tracking-[0.16em] text-white/55">
-                    {cur.spec}
-                  </span>
+                {/* Gradient + caption */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent p-6 pt-16">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[0.62rem] font-semibold tracking-[0.2em] text-teal">
+                      PROJEKT N°{String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="h-px w-5 bg-white/30" />
+                    <span className="font-mono text-[0.62rem] tracking-[0.16em] text-white/55">
+                      {cur.spec}
+                    </span>
+                  </div>
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={index}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.4, ease }}
+                      className="mt-1.5 font-display text-xl font-semibold leading-tight text-white"
+                    >
+                      {cur.label}
+                      <span className="ml-2 text-base font-normal text-white/55">· {cur.ort}</span>
+                    </motion.p>
+                  </AnimatePresence>
                 </div>
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={index}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.4, ease }}
-                    className="mt-1.5 font-display text-xl font-semibold leading-tight text-white"
-                  >
-                    {cur.label}
-                    <span className="ml-2 text-base font-normal text-white/55">· {cur.ort}</span>
-                  </motion.p>
-                </AnimatePresence>
-              </div>
 
-              {/* Auto-advance progress bar */}
-              <div className="absolute inset-x-0 bottom-0 h-[3px] bg-white/15">
-                <div
-                  key={`${index}-${paused}-${reduced}`}
-                  className="h-full origin-left bg-teal"
-                  style={
-                    reduced
-                      ? { transform: "scaleX(1)" }
-                      : {
-                          animation: "growBar 5.2s linear forwards",
-                          animationPlayState: paused ? "paused" : "running",
-                        }
-                  }
-                />
-              </div>
+                {/* Auto-advance progress bar (hidden on the slider card) */}
+                {!isBA && (
+                  <div className="absolute inset-x-0 bottom-0 h-[3px] bg-white/15">
+                    <div
+                      key={`${index}-${paused}-${reduced}`}
+                      className="h-full origin-left bg-teal"
+                      style={
+                        reduced
+                          ? { transform: "scaleX(1)" }
+                          : {
+                              animation: "growBar 5.2s linear forwards",
+                              animationPlayState: paused ? "paused" : "running",
+                            }
+                      }
+                    />
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>
@@ -357,10 +515,11 @@ export function Hero() {
           <div className="mt-5 flex items-center justify-center gap-2.5 lg:hidden">
             {projekte.map((p, i) => (
               <Thumb
-                key={p.src}
+                key={p.src + i}
                 p={p}
                 active={i === index}
                 onClick={() => setIndex(i)}
+                badge={p.type === "ba" ? "V/N" : undefined}
                 className="h-12 w-12"
               />
             ))}
