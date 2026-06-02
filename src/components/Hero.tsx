@@ -11,7 +11,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion"
-import { ArrowRight, Phone } from "lucide-react"
+import { ArrowRight, Phone, Check } from "lucide-react"
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
@@ -49,51 +49,12 @@ const projekte = [
   },
 ]
 
-/* ── Rotating Festpreis seal ── */
-function Festpreissiegel({ reduced }: { reduced: boolean }) {
-  return (
-    <div className="relative h-[112px] w-[112px] sm:h-[128px] sm:w-[128px]">
-      <svg
-        viewBox="0 0 100 100"
-        className="h-full w-full"
-        style={
-          reduced
-            ? undefined
-            : { animation: "spinSlow 22s linear infinite", transformOrigin: "center" }
-        }
-      >
-        <defs>
-          <path
-            id="siegel-kreis"
-            d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-          />
-        </defs>
-        <text
-          className="fill-dark/55"
-          style={{
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: "8.6px",
-            letterSpacing: "2.1px",
-            fontWeight: 600,
-          }}
-        >
-          <textPath href="#siegel-kreis" startOffset="0%">
-            FESTPREIS · GARANTIERT · KEINE ÜBERRASCHUNGEN ·
-          </textPath>
-        </text>
-      </svg>
-      {/* Center mark */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-[1.65rem] font-bold leading-none text-teal sm:text-[1.9rem]">
-          fix
-        </span>
-        <span className="mt-1 font-mono text-[0.5rem] font-medium uppercase tracking-[0.2em] text-dark/45">
-          Preis
-        </span>
-      </div>
-    </div>
-  )
-}
+/* ── The journey: Planung → Übergabe, ending in the Festpreis promise ── */
+const schritte = [
+  { nr: "01", titel: "Planung", sub: "3D-Entwurf" },
+  { nr: "02", titel: "Sanierung", sub: "Eigenes Team" },
+  { nr: "03", titel: "Übergabe", sub: "Schlüsselfertig" },
+]
 
 export function Hero() {
   const reduced = useReducedMotion() ?? false
@@ -134,6 +95,16 @@ export function Hero() {
   const cur = projekte[index]
   const nextFoto = projekte[(index + 1) % n]
 
+  /* gentle, reduced-motion-aware entrance */
+  const appear = (delay: number) =>
+    reduced
+      ? {}
+      : {
+          initial: { opacity: 0, scale: 0.6 },
+          animate: { opacity: 1, scale: 1 },
+          transition: { duration: 0.5, ease, delay },
+        }
+
   return (
     <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-[#F9F9F9] pt-[66px] lg:flex-row lg:items-stretch">
 
@@ -144,11 +115,9 @@ export function Hero() {
       >
         01
       </span>
-      {/* Hairline */}
-      <span aria-hidden className="pointer-events-none absolute left-10 top-0 hidden h-full w-px bg-dark/[0.06] sm:left-16 lg:left-20 lg:block" />
 
       {/* ─────────── Left: editorial content ─────────── */}
-      <div className="relative z-10 flex w-full flex-col justify-center px-7 py-16 sm:px-16 lg:w-[46%] lg:px-20 lg:py-0">
+      <div className="relative z-10 flex w-full flex-col justify-center px-7 py-16 sm:px-16 lg:w-[44%] lg:px-20 lg:py-0">
 
         {/* Kicker */}
         <motion.div
@@ -168,7 +137,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, ease, delay: 0.18 }}
-          className="mb-7 font-display text-[clamp(2.9rem,5.4vw,5.1rem)] font-bold leading-[1.02] tracking-tight text-dark"
+          className="mb-7 font-display text-[clamp(2.7rem,5vw,4.6rem)] font-bold leading-[1.03] tracking-tight text-dark"
         >
           <span className="block">Wir bauen</span>
           <span className="relative inline-block">
@@ -228,61 +197,107 @@ export function Hero() {
           </Link>
         </motion.div>
 
-        {/* Trust line */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="mt-10 flex items-center gap-6 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dark/40"
-        >
-          <span><span className="text-teal">10+</span> Jahre</span>
-          <span className="h-3 w-px bg-dark/15" />
-          <span><span className="text-teal">100%</span> Festpreis</span>
-          <span className="h-3 w-px bg-dark/15" />
-          <span>Eigenes Team</span>
-        </motion.div>
+        {/* Mobile process row (spine collapses to a horizontal stepper) */}
+        <div className="mt-11 lg:hidden">
+          <div className="flex items-stretch">
+            {schritte.map((s, i) => (
+              <div key={s.nr} className="flex flex-1 items-center">
+                <div className="flex flex-col items-center gap-1.5">
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full border border-teal/50 bg-[#F9F9F9]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-teal" />
+                  </span>
+                  <span className="font-mono text-[0.6rem] font-medium uppercase tracking-[0.12em] text-dark/60">
+                    {s.titel}
+                  </span>
+                </div>
+                <span className="mx-1 h-px flex-1 bg-dark/15" />
+              </div>
+            ))}
+            {/* Festpreis terminal */}
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-teal text-white">
+                <Check className="h-2.5 w-2.5" strokeWidth={3} />
+              </span>
+              <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.12em] text-teal">
+                Festpreis
+              </span>
+            </div>
+          </div>
+          <p className="mt-3 font-mono text-[0.62rem] tracking-[0.04em] text-dark/40">
+            Ein Ablauf, ein Team, ein garantierter Preis.
+          </p>
+        </div>
+      </div>
+
+      {/* ─────────── Middle: vertical process spine (desktop) ─────────── */}
+      <div className="relative z-10 hidden shrink-0 items-center px-6 lg:flex xl:px-8">
+        <div className="relative flex h-[360px] flex-col justify-between xl:h-[400px]">
+          {/* connecting line */}
+          <motion.span
+            aria-hidden
+            className="absolute left-[9px] top-2 bottom-2 w-0.5 origin-top bg-gradient-to-b from-teal/40 via-teal/30 to-teal"
+            initial={reduced ? false : { scaleY: 0 }}
+            animate={reduced ? undefined : { scaleY: 1 }}
+            transition={{ duration: 1, ease, delay: 0.6 }}
+          />
+
+          {schritte.map((s, i) => (
+            <motion.div key={s.nr} {...appear(0.8 + i * 0.16)} className="relative flex items-center gap-3.5">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                <span className="h-3 w-3 rounded-full border-2 border-teal/60 bg-[#F9F9F9]" />
+              </span>
+              <div className="leading-none">
+                <p className="font-mono text-[0.82rem] font-semibold text-dark">
+                  <span className="text-teal/60">{s.nr}</span> {s.titel}
+                </p>
+                <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-dark/40">
+                  {s.sub}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+
+          {/* Festpreis — the emphasized terminal node (replaces the old seal) */}
+          <motion.div {...appear(0.8 + schritte.length * 0.16)} className="relative flex items-center gap-3.5">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-teal text-white shadow-[0_0_0_4px_rgba(42,191,191,0.15)]">
+                <Check className="h-3 w-3" strokeWidth={3} />
+              </span>
+            </span>
+            <div className="leading-none">
+              <p className="font-display text-[0.98rem] font-bold text-dark">Festpreis garantiert</p>
+              <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-teal">
+                Schriftlich fixiert
+              </p>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       {/* ─────────── Right: living gallery ─────────── */}
-      <div className="relative w-full flex-1 lg:w-[54%]">
+      <div className="relative w-full flex-1">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease }}
-          className="relative flex h-full items-center justify-center px-7 pb-16 sm:px-16 lg:px-12 lg:pb-0"
+          className="relative flex h-full items-center justify-center px-7 pb-16 sm:px-16 lg:px-6 lg:pb-0 xl:px-10"
           style={{ perspective: 1200 }}
           onMouseMove={onMove}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={onLeave}
         >
-          {/* Festpreis seal — overlaps the frame */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.9, ease, delay: 1 }}
-            className="absolute bottom-10 left-4 z-30 flex items-center justify-center rounded-full bg-white/85 shadow-xl backdrop-blur-sm sm:left-10 lg:-left-2 lg:bottom-20"
-          >
-            <Festpreissiegel reduced={reduced} />
-          </motion.div>
-
           {/* Photo stack */}
           <motion.div
-            className="relative w-full max-w-[420px] lg:max-w-[460px]"
+            className="relative w-full max-w-[480px] lg:max-w-[540px]"
             style={reduced ? undefined : { rotateX: rotX, rotateY: rotY, x: transX, transformStyle: "preserve-3d" }}
           >
             {/* Depth card peeking behind */}
             <div
               aria-hidden
-              className="absolute -right-5 top-6 hidden aspect-[4/5] w-full overflow-hidden rounded-[2px] opacity-40 shadow-lg sm:block"
+              className="absolute -right-6 top-7 hidden aspect-[4/5] w-full overflow-hidden rounded-[2px] opacity-40 shadow-lg sm:block"
               style={{ transform: "translateZ(-40px) rotate(2.5deg)" }}
             >
-              <Image
-                src={nextFoto.src}
-                alt=""
-                fill
-                sizes="460px"
-                className="object-cover"
-              />
+              <Image src={nextFoto.src} alt="" fill sizes="540px" className="object-cover" />
               <div className="absolute inset-0 bg-[#F9F9F9]/30" />
             </div>
 
@@ -313,7 +328,7 @@ export function Hero() {
                     alt={`${cur.label} — Badsanierung in ${cur.ort}`}
                     fill
                     priority={index === 0}
-                    sizes="(max-width: 1024px) 90vw, 460px"
+                    sizes="(max-width: 1024px) 90vw, 540px"
                     className="object-cover"
                   />
                 </motion.div>
@@ -340,9 +355,7 @@ export function Hero() {
                     className="mt-1.5 font-display text-xl font-semibold leading-tight text-white"
                   >
                     {cur.label}
-                    <span className="ml-2 text-base font-normal text-white/55">
-                      · {cur.ort}
-                    </span>
+                    <span className="ml-2 text-base font-normal text-white/55">· {cur.ort}</span>
                   </motion.p>
                 </AnimatePresence>
               </div>
@@ -366,7 +379,7 @@ export function Hero() {
           </motion.div>
 
           {/* Index buttons */}
-          <div className="absolute bottom-5 right-7 z-30 flex items-center gap-2.5 sm:right-16 lg:right-12">
+          <div className="absolute bottom-5 right-7 z-30 flex items-center gap-2.5 sm:right-16 lg:right-6 xl:right-10">
             {projekte.map((_, i) => (
               <button
                 key={i}
