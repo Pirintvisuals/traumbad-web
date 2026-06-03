@@ -1,52 +1,58 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Bath, Wrench, Accessibility } from "lucide-react"
+import { Sparkles, Wrench, Bath } from "lucide-react"
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 const leistungen = [
   {
-    icon: Bath,
+    icon: Sparkles,
     nummer: "01",
-    titel: "Komplettsanierung",
-    intro: "Von der nackten Wand bis zum fertigen Bad.",
+    titel: "Frischekur",
+    intro: "Frischer Look, ohne Baustelle.",
     beschreibung:
-      "Wir planen, liefern und bauen — und gehen erst, wenn alles sitzt. Fliesen, Sanitär, Elektrik, Beleuchtung: alles aus einer Hand, ein Ansprechpartner, ein Festpreis.",
+      "Ihr Bad ist im Kern in Ordnung, sieht aber müde aus? Wir tauschen gezielt aus, was den Unterschied macht — schnell, sauber und ohne große Stemmarbeiten.",
     details: [
-      "Aufmaß & Planung inklusive",
-      "Fliesenarbeiten & Abdichtung",
-      "Sanitär- und Elektroinstallation",
-      "Besenreine Übergabe",
+      "Armaturen & Waschtisch",
+      "Spiegelschrank & Beleuchtung",
+      "Neue Dusche oder Duschwand",
+      "Oberflächen & Silikon erneuert",
     ],
+    preisVon: "3.500",
+    preisBis: "5.000",
   },
   {
     icon: Wrench,
     nummer: "02",
-    titel: "Teilrenovierung",
-    intro: "Nicht immer muss alles neu.",
+    titel: "Teilsanierung",
+    intro: "Wanne raus, Dusche rein.",
     beschreibung:
-      "Wir tauschen aus, was stört — Dusche, Armaturen, Waschtisch, Fliesen — präzise, sauber und ohne unnötige Zusatzarbeiten. Zum Festpreis, ohne Überraschungen.",
+      "Der gezielte Umbau ohne Komplettabriss — etwa von der Badewanne zur bodenebenen Dusche, mit pflegeleichten Wandpaneelen statt Fliesenchaos. Präzise und in wenigen Tagen.",
     details: [
-      "Dusche & Badewanne",
-      "Armaturen & Waschtisch",
-      "Fliesen & Oberflächen",
-      "Licht & Spiegelschrank",
+      "Wanne-zu-Dusche-Umbau",
+      "Wandpaneele statt Verfliesung",
+      "Neue Armaturen & Sanitär",
+      "Sauber & zügig umgesetzt",
     ],
+    preisVon: "5.000",
+    preisBis: "8.500",
   },
   {
-    icon: Accessibility,
+    icon: Bath,
     nummer: "03",
-    titel: "Barrierefreies Bad",
-    intro: "Sicher. Komfortabel. Wohnlich.",
+    titel: "Komplettsanierung",
+    intro: "Von der nackten Wand bis zum fertigen Bad.",
     beschreibung:
-      "Bodenebene Dusche, rutschfeste Böden, smarte Haltesysteme. Wir bauen Ihr Bad so um, dass es Sie unterstützt — heute und in Zukunft. Normgerecht und trotzdem schön.",
+      "Wir planen, liefern und bauen — und gehen erst, wenn alles sitzt. Komplett neu verfliest oder in fugenlosem Mikrozement: alles aus einer Hand, ein Ansprechpartner.",
     details: [
-      "Bodenebene Dusche",
-      "Rutschhemmende Böden",
-      "Haltegriffe & Stützgeländer",
-      "Türverbreiterung möglich",
+      "Aufmaß & Planung inklusive",
+      "Neue Fliesen oder Mikrozement",
+      "Sanitär, Elektrik & Beleuchtung",
+      "Besenreine Übergabe",
     ],
+    preisVon: "10.000",
+    preisBis: "18.000",
   },
 ]
 
@@ -116,7 +122,26 @@ export function Leistungen() {
                 <h3 className="font-display font-bold text-[1.35rem] text-dark mb-1 tracking-tight">
                   {item.titel}
                 </h3>
-                <p className="text-teal font-semibold text-sm mb-4">{item.intro}</p>
+                <p className="text-teal font-semibold text-sm mb-5">{item.intro}</p>
+
+                {/* Price — Festpreis range */}
+                <div className="mb-6 pb-6 border-b border-border">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="font-mono font-bold text-[1.7rem] text-dark tracking-tight leading-none">
+                      {item.preisVon}
+                    </span>
+                    <span className="font-mono text-dark/35 text-lg leading-none">–</span>
+                    <span className="font-mono font-bold text-[1.7rem] text-dark tracking-tight leading-none">
+                      {item.preisBis}
+                    </span>
+                    <span className="font-mono font-bold text-[1.7rem] text-dark/55 tracking-tight leading-none">
+                      €
+                    </span>
+                  </div>
+                  <span className="mt-2 inline-block font-mono text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-teal">
+                    Festpreis · inkl. Material
+                  </span>
+                </div>
 
                 {/* Description */}
                 <p className="text-muted-foreground leading-relaxed text-[0.92rem] mb-7">
