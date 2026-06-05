@@ -25,6 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://traumbad.eu"),
   title: "TraumBad Installations – Badrenovierung Burgenland",
   description:
     "Premium-Badrenovierungen in Burgenland & Wien. Komplettsanierung, Teilrenovierung und barrierefreie Bäder – immer zum Festpreis. Meisterbetrieb aus dem Burgenland.",

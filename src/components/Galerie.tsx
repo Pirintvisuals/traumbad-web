@@ -2,93 +2,12 @@
 
 import { useState, useCallback, useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { motion, AnimatePresence, useSpring } from "framer-motion"
-import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
+import { fotos } from "@/lib/referenzen"
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
-
-const fotos = [
-  {
-    id: 1,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-23-525x696.jpg",
-    w: 525, h: 696,
-    label: "Komplettsanierung",
-    sub: "Burgenland",
-    tall: true,
-  },
-  {
-    id: 2,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-20-341x341.jpg",
-    w: 341, h: 341,
-    label: "Bodenebene Dusche",
-    sub: "Wien",
-    tall: false,
-  },
-  {
-    id: 3,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-25-341x341.jpg",
-    w: 341, h: 341,
-    label: "Elegante Neugestaltung",
-    sub: "Burgenland",
-    tall: false,
-  },
-  {
-    id: 4,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-26-341x341.jpg",
-    w: 341, h: 341,
-    label: "Duschkabine & Armaturen",
-    sub: "Wien",
-    tall: false,
-  },
-  {
-    id: 5,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-31-525x696.jpg",
-    w: 525, h: 696,
-    label: "Premium-Sanierung",
-    sub: "Wien",
-    tall: true,
-  },
-  {
-    id: 6,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-27-341x341.jpg",
-    w: 341, h: 341,
-    label: "Waschtisch & Spiegel",
-    sub: "Burgenland",
-    tall: false,
-  },
-  {
-    id: 7,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-28-341x341.jpg",
-    w: 341, h: 341,
-    label: "Hochwertige Fliesenarbeit",
-    sub: "Wien",
-    tall: false,
-  },
-  {
-    id: 8,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-29-341x341.jpg",
-    w: 341, h: 341,
-    label: "Barrierefreies Bad",
-    sub: "Burgenland",
-    tall: false,
-  },
-  {
-    id: 9,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-30-341x341.jpg",
-    w: 341, h: 341,
-    label: "Badsanierung",
-    sub: "Burgenland",
-    tall: false,
-  },
-  {
-    id: 10,
-    src: "/traumbad-eu-badsanierung-badezimmer-renovierung-32-341x341.jpg",
-    w: 341, h: 341,
-    label: "Schlüsselfertige Übergabe",
-    sub: "Wien",
-    tall: false,
-  },
-]
 
 export function Galerie() {
   const [selected, setSelected] = useState<number | null>(null)
@@ -220,6 +139,23 @@ export function Galerie() {
             </motion.div>
           ))}
         </div>
+
+        {/* CTA to full references page */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1, ease }}
+          className="mt-12 lg:mt-14 flex justify-center"
+        >
+          <Link
+            href="/referenzen"
+            className="group relative z-10 inline-flex items-center gap-2.5 border border-white/15 hover:border-teal text-white font-semibold px-7 py-3.5 rounded-md transition-colors duration-200"
+          >
+            Alle Referenzen ansehen
+            <ArrowRight className="w-4 h-4 text-teal group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
 
       </div>
 

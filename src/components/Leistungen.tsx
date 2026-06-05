@@ -1,7 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Sparkles, Wrench, Bath } from "lucide-react"
+import Link from "next/link"
+import { Sparkles, Wrench, Bath, ArrowRight } from "lucide-react"
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
@@ -9,6 +10,7 @@ const leistungen = [
   {
     icon: Sparkles,
     nummer: "01",
+    slug: "frischekur",
     titel: "Frischekur",
     intro: "Frischer Look, ohne Baustelle.",
     beschreibung:
@@ -19,12 +21,13 @@ const leistungen = [
       "Neue Dusche oder Duschwand",
       "Oberflächen & Silikon erneuert",
     ],
-    preisVon: "3.500",
-    preisBis: "5.000",
+    preisVon: "5.000",
+    preisBis: "8.000",
   },
   {
     icon: Wrench,
     nummer: "02",
+    slug: "teilsanierung",
     titel: "Teilsanierung",
     intro: "Wanne raus, Dusche rein.",
     beschreibung:
@@ -35,12 +38,13 @@ const leistungen = [
       "Neue Armaturen & Sanitär",
       "Sauber & zügig umgesetzt",
     ],
-    preisVon: "5.000",
-    preisBis: "8.500",
+    preisVon: "8.500",
+    preisBis: "14.000",
   },
   {
     icon: Bath,
     nummer: "03",
+    slug: "komplettsanierung",
     titel: "Komplettsanierung",
     intro: "Von der nackten Wand bis zum fertigen Bad.",
     beschreibung:
@@ -51,8 +55,8 @@ const leistungen = [
       "Sanitär, Elektrik & Beleuchtung",
       "Besenreine Übergabe",
     ],
-    preisVon: "10.000",
-    preisBis: "18.000",
+    preisVon: "15.000",
+    preisBis: "26.000",
   },
 ]
 
@@ -106,8 +110,14 @@ export function Leistungen() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.65, delay: i * 0.12, ease }}
-                className="group relative bg-white border border-border rounded-2xl p-8 overflow-hidden hover:shadow-xl hover:shadow-dark/5 hover:-translate-y-1 transition-all duration-400 cursor-default"
+                className="group relative bg-white border border-border rounded-2xl p-8 overflow-hidden hover:shadow-xl hover:shadow-dark/5 hover:-translate-y-1 transition-all duration-400"
               >
+                {/* Full-card link overlay */}
+                <Link
+                  href={`/leistungen/${item.slug}`}
+                  className="absolute inset-0 z-20"
+                  aria-label={`${item.titel} – Details ansehen`}
+                />
                 {/* Number watermark */}
                 <span className="absolute top-6 right-7 font-display font-bold text-6xl text-dark/4 select-none leading-none">
                   {item.nummer}
@@ -149,7 +159,7 @@ export function Leistungen() {
                 </p>
 
                 {/* Details */}
-                <ul className="space-y-2">
+                <ul className="space-y-2 mb-7">
                   {item.details.map((d) => (
                     <li key={d} className="flex items-center gap-2.5 text-sm text-dark/65">
                       <span className="w-1.5 h-1.5 rounded-full bg-teal shrink-0" />
@@ -157,6 +167,12 @@ export function Leistungen() {
                     </li>
                   ))}
                 </ul>
+
+                {/* CTA — sits above the overlay link visually */}
+                <span className="relative z-10 inline-flex items-center gap-1.5 text-sm font-semibold text-teal group-hover:gap-2.5 transition-all duration-300">
+                  Details ansehen
+                  <ArrowRight className="w-4 h-4" />
+                </span>
 
                 {/* Animated bottom border */}
                 <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-teal origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-b-2xl" />

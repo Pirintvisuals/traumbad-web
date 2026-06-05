@@ -7,11 +7,11 @@ import { Menu, Phone, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { href: "#leistungen", label: "Leistungen" },
-  { href: "#galerie", label: "Galerie" },
-  { href: "#festpreis", label: "Festpreis" },
-  { href: "#bewertungen", label: "Stimmen" },
-  { href: "#kontakt", label: "Kontakt" },
+  { href: "/#leistungen", label: "Leistungen" },
+  { href: "/referenzen", label: "Referenzen" },
+  { href: "/ueber-uns", label: "Über uns" },
+  { href: "/#festpreis", label: "Festpreis" },
+  { href: "/#kontakt", label: "Kontakt" },
 ]
 
 export function Navbar() {
@@ -101,7 +101,7 @@ export function Navbar() {
 
               {/* CTA */}
               <Link
-                href="#kontakt"
+                href="/#kontakt"
                 className="hidden sm:inline-flex items-center bg-teal hover:bg-teal-dark text-white text-sm font-semibold px-5 py-2.5 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
               >
                 Angebot anfragen
@@ -171,7 +171,7 @@ export function Navbar() {
                 +43 660 630 4703
               </a>
               <Link
-                href="#kontakt"
+                href="/#kontakt"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center bg-teal text-white font-semibold py-3.5 px-4 rounded-md hover:bg-teal-dark transition-colors cursor-pointer shadow-sm"
               >
