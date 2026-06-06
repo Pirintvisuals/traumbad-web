@@ -60,7 +60,7 @@ const leistungen = [
   },
 ]
 
-export function Leistungen() {
+export function Leistungen({ showAllLink = false }: { showAllLink?: boolean }) {
   return (
     <section id="leistungen" className="bg-background py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
@@ -180,6 +180,24 @@ export function Leistungen() {
             )
           })}
         </div>
+
+        {showAllLink && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease }}
+            className="mt-12 lg:mt-14 flex justify-center"
+          >
+            <Link
+              href="/leistungen"
+              className="group inline-flex items-center gap-2.5 border border-border hover:border-teal text-dark font-semibold px-7 py-3.5 rounded-md transition-colors duration-200 cursor-pointer"
+            >
+              Alle Leistungen ansehen
+              <ArrowRight className="w-4 h-4 text-teal group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+        )}
       </div>
     </section>
   )

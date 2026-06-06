@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import { ArrowRight, ArrowLeft, Check, Clock, Users, Phone } from "lucide-react"
+import { ArrowRight, Check, Clock, Users, Phone } from "lucide-react"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Reveal } from "@/components/Reveal"
@@ -63,10 +63,9 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
               </Link>
               <span className="text-white/25">/</span>
               <Link
-                href="/#leistungen"
-                className="inline-flex items-center gap-1.5 text-white/45 hover:text-white transition-colors"
+                href="/leistungen"
+                className="text-white/45 hover:text-white transition-colors"
               >
-                <ArrowLeft className="w-3.5 h-3.5" />
                 Leistungen
               </Link>
               <span className="text-white/25">/</span>

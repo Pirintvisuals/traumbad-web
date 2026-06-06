@@ -7,10 +7,9 @@ import { Menu, Phone, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { href: "/#leistungen", label: "Leistungen" },
+  { href: "/leistungen", label: "Leistungen" },
   { href: "/referenzen", label: "Referenzen" },
   { href: "/ueber-uns", label: "Über uns" },
-  { href: "/#festpreis", label: "Festpreis" },
   { href: "/#kontakt", label: "Kontakt" },
 ]
 

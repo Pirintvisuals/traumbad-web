@@ -3,10 +3,9 @@ import Image from "next/image"
 import { Phone, Mail, MapPin } from "lucide-react"
 
 const footerLinks = [
-  { label: "Leistungen", href: "/#leistungen" },
+  { label: "Leistungen", href: "/leistungen" },
   { label: "Referenzen", href: "/referenzen" },
   { label: "Über uns", href: "/ueber-uns" },
-  { label: "Festpreis", href: "/#festpreis" },
   { label: "Kontakt", href: "/#kontakt" },
 ]
 
