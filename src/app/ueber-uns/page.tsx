@@ -66,16 +66,16 @@ export default function UeberUnsPage() {
                 <div className="flex flex-wrap gap-3">
                   <Link
                     href="/#kontakt"
-                    className="inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
+                    className="inline-flex items-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
                   >
                     Anfrage stellen
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <a
                     href="tel:+436606304703"
-                    className="inline-flex items-center gap-2 border border-border hover:border-teal text-dark font-semibold px-6 py-3.5 rounded-md transition-colors"
+                    className="inline-flex items-center gap-2 border border-border hover:border-cta/40 text-cta font-semibold px-6 py-3.5 rounded-md transition-colors"
                   >
-                    <Phone className="w-4 h-4 text-teal" />
+                    <Phone className="w-4 h-4" />
                     +43 660 630 4703
                   </a>
                 </div>
@@ -275,16 +275,16 @@ export default function UeberUnsPage() {
                   </p>
                   <Link
                     href="/#kontakt"
-                    className="inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors w-full sm:w-auto"
+                    className="inline-flex items-center justify-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors w-full sm:w-auto"
                   >
                     Termin anfragen
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <a
                     href="tel:+436606304703"
-                    className="flex items-center gap-2 text-white/70 hover:text-teal font-semibold mt-5 transition-colors"
+                    className="flex items-center gap-2 text-cta hover:text-cta-dark font-semibold mt-5 transition-colors"
                   >
-                    <Phone className="w-4 h-4 text-teal" />
+                    <Phone className="w-4 h-4" />
                     +43 660 630 4703
                   </a>
                 </div>

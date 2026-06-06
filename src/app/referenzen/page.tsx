@@ -74,16 +74,16 @@ export default function ReferenzenPage() {
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <Link
                 href="/#kontakt"
-                className="inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
+                className="inline-flex items-center justify-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
               >
                 Anfrage stellen
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <a
                 href="tel:+436606304703"
-                className="inline-flex items-center justify-center gap-2 border border-border hover:border-teal text-dark font-semibold px-6 py-3.5 rounded-md transition-colors"
+                className="inline-flex items-center justify-center gap-2 border border-border hover:border-cta/40 text-dark font-semibold px-6 py-3.5 rounded-md transition-colors"
               >
-                <Phone className="w-4 h-4 text-teal" />
+                <Phone className="w-4 h-4 text-cta" />
                 Anrufen
               </a>
             </div>

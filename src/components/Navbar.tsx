@@ -90,10 +90,10 @@ export function Navbar() {
               {/* Vertical divider */}
               <div className="hidden lg:block w-px h-5 bg-dark/12" />
 
-              {/* Phone — teal to draw the eye */}
+              {/* Phone — CTA accent to draw the eye */}
               <a
                 href="tel:+436606304703"
-                className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-teal hover:text-teal-dark transition-colors duration-200 cursor-pointer"
+                className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-cta hover:text-cta-dark transition-colors duration-200 cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 shrink-0" />
                 +43 660 630 4703
@@ -102,7 +102,7 @@ export function Navbar() {
               {/* CTA */}
               <Link
                 href="/#kontakt"
-                className="hidden sm:inline-flex items-center bg-teal hover:bg-teal-dark text-white text-sm font-semibold px-5 py-2.5 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                className="hidden sm:inline-flex items-center bg-cta hover:bg-cta-dark text-white text-sm font-semibold px-5 py-2.5 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
               >
                 Angebot anfragen
               </Link>
@@ -165,7 +165,7 @@ export function Navbar() {
             <div className="mt-auto px-6 pb-8 flex flex-col gap-3">
               <a
                 href="tel:+436606304703"
-                className="flex items-center gap-2 text-teal font-semibold py-2 cursor-pointer"
+                className="flex items-center gap-2 text-cta font-semibold py-2 cursor-pointer"
               >
                 <Phone className="w-4 h-4" />
                 +43 660 630 4703
@@ -173,7 +173,7 @@ export function Navbar() {
               <Link
                 href="/#kontakt"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center bg-teal text-white font-semibold py-3.5 px-4 rounded-md hover:bg-teal-dark transition-colors cursor-pointer shadow-sm"
+                className="flex items-center justify-center bg-cta text-white font-semibold py-3.5 px-4 rounded-md hover:bg-cta-dark transition-colors cursor-pointer shadow-sm"
               >
                 Angebot anfragen
               </Link>

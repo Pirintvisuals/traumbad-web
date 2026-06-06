@@ -194,7 +194,7 @@ export function Festpreis() {
           </div>
           <Link
             href="#kontakt"
-            className="inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors cursor-pointer shrink-0"
+            className="inline-flex items-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors cursor-pointer shrink-0"
           >
             Angebot anfragen
             <ArrowRight className="w-4 h-4" />

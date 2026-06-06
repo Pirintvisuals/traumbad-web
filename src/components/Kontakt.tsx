@@ -71,7 +71,7 @@ export function Kontakt() {
                       <div className="text-[11px] text-muted-foreground/70 uppercase tracking-wider font-medium">
                         {item.label}
                       </div>
-                      <div className="text-dark font-semibold text-[0.95rem] mt-0.5">{item.wert}</div>
+                      <div className={`font-semibold text-[0.95rem] mt-0.5 ${item.label === "Telefon" ? "text-cta" : "text-dark"}`}>{item.wert}</div>
                     </div>
                   </div>
                 )
@@ -203,7 +203,7 @@ export function Kontakt() {
                 <button
                   type="submit"
                   disabled={laden}
-                  className="w-full flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {laden ? (
                     <>

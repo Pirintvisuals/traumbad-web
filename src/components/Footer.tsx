@@ -42,9 +42,9 @@ export function Footer() {
             <div className="space-y-3">
               <a
                 href="tel:+436606304703"
-                className="flex items-center gap-2.5 text-white/50 hover:text-white text-sm transition-colors cursor-pointer"
+                className="flex items-center gap-2.5 text-cta hover:text-cta-dark font-semibold text-sm transition-colors cursor-pointer"
               >
-                <Phone className="w-3.5 h-3.5 text-teal shrink-0" />
+                <Phone className="w-3.5 h-3.5 shrink-0" />
                 +43 660 630 4703
               </a>
               <a

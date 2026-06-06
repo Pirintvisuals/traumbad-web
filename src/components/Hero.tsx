@@ -337,16 +337,16 @@ export function Hero() {
         >
           <Link
             href="#kontakt"
-            className="group inline-flex items-center justify-center gap-2 rounded-md bg-teal px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-md transition-colors duration-300 hover:bg-teal-dark cursor-pointer"
+            className="group inline-flex items-center justify-center gap-2 rounded-md bg-cta px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-md transition-colors duration-300 hover:bg-cta-dark cursor-pointer"
           >
             Kostenvoranschlag anfordern
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
           <Link
             href="tel:+436606304703"
-            className="inline-flex items-center justify-center gap-2 rounded-md border border-dark/15 px-7 py-3.5 text-[0.95rem] font-medium text-dark/70 transition-colors duration-300 hover:border-dark/30 hover:text-dark cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-dark/15 px-7 py-3.5 text-[0.95rem] font-semibold text-cta transition-colors duration-300 hover:border-cta/40 cursor-pointer"
           >
-            <Phone className="h-4 w-4 text-teal" />
+            <Phone className="h-4 w-4" />
             +43 660 630 4703
           </Link>
         </motion.div>
