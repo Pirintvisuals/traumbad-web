@@ -66,31 +66,6 @@ export function Festpreis() {
         style={{ background: "radial-gradient(circle at 80% 20%, #2ABFBF 0%, transparent 60%)" }}
       />
 
-      {/* Background dots */}
-      {[
-        { left: "1%",  top: "10%", size: 6,  opacity: 0.12, delay: "0s",   dur: "4.8s" },
-        { left: "97%", top: "20%", size: 5,  opacity: 0.10, delay: "0.6s", dur: "5.4s" },
-        { left: "4%",  top: "75%", size: 4,  opacity: 0.11, delay: "1.4s", dur: "5.0s" },
-        { left: "95%", top: "72%", size: 7,  opacity: 0.08, delay: "0.3s", dur: "6.0s" },
-        { left: "50%", top: "3%",  size: 4,  opacity: 0.09, delay: "1.8s", dur: "4.5s" },
-        { left: "25%", top: "95%", size: 5,  opacity: 0.10, delay: "2.3s", dur: "5.7s" },
-        { left: "75%", top: "92%", size: 3,  opacity: 0.13, delay: "0.9s", dur: "3.9s" },
-      ].map((d, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full pointer-events-none select-none"
-          style={{
-            left: d.left,
-            top: d.top,
-            width: d.size,
-            height: d.size,
-            backgroundColor: "#2ABFBF",
-            opacity: d.opacity,
-            animation: `floatDot ${d.dur} ${d.delay} ease-in-out infinite`,
-          }}
-        />
-      ))}
-
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8">
 
         {/* Header */}

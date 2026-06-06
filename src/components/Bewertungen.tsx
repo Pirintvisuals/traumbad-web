@@ -36,34 +36,9 @@ const bewertungen = [
   },
 ]
 
-const dots = [
-  { left: "2%",   top: "12%", size: 6,  opacity: 0.10, delay: "0s",    dur: "5.1s" },
-  { left: "96%",  top: "8%",  size: 5,  opacity: 0.08, delay: "0.7s",  dur: "4.6s" },
-  { left: "5%",   top: "70%", size: 4,  opacity: 0.11, delay: "1.3s",  dur: "5.8s" },
-  { left: "94%",  top: "60%", size: 7,  opacity: 0.07, delay: "0.4s",  dur: "6.2s" },
-  { left: "50%",  top: "5%",  size: 4,  opacity: 0.08, delay: "1.8s",  dur: "4.4s" },
-  { left: "80%",  top: "90%", size: 5,  opacity: 0.09, delay: "0.2s",  dur: "5.5s" },
-  { left: "18%",  top: "92%", size: 3,  opacity: 0.12, delay: "2.2s",  dur: "4.0s" },
-]
-
 export function Bewertungen() {
   return (
     <section id="bewertungen" className="relative bg-white py-24 lg:py-32 overflow-hidden">
-      {dots.map((d, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full pointer-events-none select-none"
-          style={{
-            left: d.left,
-            top: d.top,
-            width: d.size,
-            height: d.size,
-            backgroundColor: "#2ABFBF",
-            opacity: d.opacity,
-            animation: `floatDot ${d.dur} ${d.delay} ease-in-out infinite`,
-          }}
-        />
-      ))}
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8">
 
         {/* Header */}

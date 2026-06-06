@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion, AnimatePresence, useSpring } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { X, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
 import { fotos } from "@/lib/referenzen"
 
@@ -11,10 +11,6 @@ const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 export function Galerie() {
   const [selected, setSelected] = useState<number | null>(null)
-  const [cursorVisible, setCursorVisible] = useState(false)
-
-  const cursorX = useSpring(-100, { stiffness: 500, damping: 28, mass: 0.5 })
-  const cursorY = useSpring(-100, { stiffness: 500, damping: 28, mass: 0.5 })
 
   const close = useCallback(() => setSelected(null), [])
   const prev = useCallback(() =>
@@ -37,29 +33,11 @@ export function Galerie() {
     return () => { document.body.style.overflow = "" }
   }, [selected])
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    cursorX.set(e.clientX - 28)
-    cursorY.set(e.clientY - 28)
-  }
-
   return (
     <section
       id="galerie"
-      className="relative bg-dark py-24 lg:py-32 cursor-none"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setCursorVisible(true)}
-      onMouseLeave={() => setCursorVisible(false)}
+      className="relative bg-dark py-24 lg:py-32"
     >
-      {/* Custom cursor */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[90] w-14 h-14 rounded-full border border-teal/60 flex items-center justify-center"
-        style={{ x: cursorX, y: cursorY }}
-        animate={{ opacity: cursorVisible ? 1 : 0, scale: cursorVisible ? 1 : 0.5 }}
-        transition={{ opacity: { duration: 0.15 }, scale: { duration: 0.2 } }}
-      >
-        <span className="text-teal text-[7px] font-bold uppercase tracking-[0.18em]">Öffnen</span>
-      </motion.div>
-
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
 
         {/* Header */}
@@ -108,7 +86,7 @@ export function Galerie() {
               transition={{ duration: 0.65, delay: (i % 3) * 0.08, ease }}
               onClick={() => setSelected(i)}
               className={[
-                "relative overflow-hidden group",
+                "relative overflow-hidden group cursor-pointer",
                 foto.tall ? "row-span-2" : "",
               ].join(" ")}
             >

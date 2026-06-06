@@ -46,8 +46,8 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
     <main>
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative bg-dark pt-[120px] pb-20 lg:pt-[150px] lg:pb-28 overflow-hidden">
+      {/* Page header (sub-page, not a standalone hero) */}
+      <section className="relative bg-dark pt-[100px] pb-14 lg:pt-[120px] lg:pb-18 overflow-hidden">
         {/* Teal glow */}
         <div
           className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.10] pointer-events-none"
@@ -55,21 +55,31 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8">
+          {/* Breadcrumb — clear "you are here" */}
           <Reveal y={12}>
-            <Link
-              href="/#leistungen"
-              className="inline-flex items-center gap-2 text-white/45 hover:text-teal text-sm font-medium mb-10 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Alle Leistungen
-            </Link>
+            <nav aria-label="Brotkrümel" className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+              <Link href="/" className="text-white/45 hover:text-white transition-colors">
+                Start
+              </Link>
+              <span className="text-white/25">/</span>
+              <Link
+                href="/#leistungen"
+                className="inline-flex items-center gap-1.5 text-white/45 hover:text-white transition-colors"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                Leistungen
+              </Link>
+              <span className="text-white/25">/</span>
+              <span className="text-teal font-medium">{bundle.titel}</span>
+            </nav>
           </Reveal>
 
           <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 lg:gap-16 items-center">
             <div>
               <Reveal>
-                <span className="inline-block text-teal text-xs font-bold uppercase tracking-[0.2em] mb-5">
-                  Leistung {bundle.nummer}
+                <span className="inline-flex items-center gap-2.5 mb-5 font-mono text-xs font-bold uppercase tracking-[0.2em] text-teal">
+                  Paket {Number(bundle.nummer)} / {bundles.length}
+                  <span className="h-px w-7 bg-teal/40" />
                 </span>
               </Reveal>
               <Reveal delay={0.06}>
@@ -358,7 +368,7 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
         <div className="max-w-7xl mx-auto px-5 sm:px-8">
           <Reveal>
             <h2 className="font-display font-bold text-2xl text-dark tracking-tight mb-9">
-              Andere Leistungen
+              Weitere Pakete ansehen
             </h2>
           </Reveal>
           <div className="grid sm:grid-cols-2 gap-5 lg:gap-6">
@@ -370,7 +380,7 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
                 >
                   <div>
                     <span className="font-mono text-xs font-semibold text-teal">
-                      Leistung {b.nummer}
+                      Paket {b.nummer}
                     </span>
                     <h3 className="font-display font-bold text-xl text-dark mt-1 mb-1 tracking-tight">
                       {b.titel}

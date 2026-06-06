@@ -1,11 +1,11 @@
 import Link from "next/link"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Reveal } from "@/components/Reveal"
 import { bundles } from "@/lib/bundles"
 
-// Vollständiges Leistungsverzeichnis: jede einzelne Arbeit aus allen drei
-// Paketen, mit Kurzbeschreibung. Klick führt zur ausführlichen Erklärung
-// auf der jeweiligen Paket-Unterseite (Anker auf die konkrete Arbeit).
+// "Alles, was wir machen" — das vollständige Leistungsverzeichnis als ruhige,
+// scanbare Liste (nicht als Kartenwand). Jede Zeile verlinkt direkt zur
+// ausführlichen Erklärung auf der jeweiligen Paket-Unterseite.
 
 export function Leistungsverzeichnis() {
   return (
@@ -15,84 +15,76 @@ export function Leistungsverzeichnis() {
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         {/* Header */}
-        <div className="mb-16 lg:mb-20 max-w-2xl">
+        <div className="mb-14 lg:mb-18 max-w-2xl">
           <Reveal y={12}>
             <span className="inline-block text-teal text-xs font-bold uppercase tracking-[0.2em] mb-4">
-              Leistungsverzeichnis
+              Alle Leistungen
             </span>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-display font-bold text-[clamp(2rem,4vw,3.2rem)] text-dark leading-[1.1] tracking-tight mb-5">
-              Jeder Handgriff,
-              <br />
-              einzeln erklärt.
+              Alles, was wir machen.
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              Hier finden Sie jede einzelne Leistung, die wir ausführen — kurz erklärt.
-              Ein Klick führt Sie direkt zum passenden Paket, wo wir genau beschreiben,
-              was dahintersteckt und wie wir es umsetzen.
+              Vom getauschten Wasserhahn bis zur Komplettsanierung — hier sehen Sie jede
+              einzelne Leistung auf einen Blick. Tippen Sie auf eine Leistung, und wir
+              erklären sie ausführlich.
             </p>
           </Reveal>
         </div>
 
-        {/* Eine Gruppe je Paket */}
-        <div className="space-y-14 lg:space-y-20">
+        {/* Drei Listen — eine je Paket */}
+        <div className="grid lg:grid-cols-3 gap-x-10 gap-y-12">
           {bundles.map((bundle) => (
-            <div key={bundle.slug}>
-              {/* Gruppen-Kopf */}
-              <Reveal y={16}>
-                <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 mb-7 pb-5 border-b border-border">
-                  <div className="flex items-baseline gap-4">
-                    <span className="font-mono text-sm font-semibold text-teal tabular-nums">
+            <Reveal key={bundle.slug} y={20}>
+              <div>
+                {/* Listen-Kopf */}
+                <Link
+                  href={`/leistungen/${bundle.slug}`}
+                  className="group flex items-baseline justify-between gap-3 pb-4 mb-2 border-b-2 border-dark/10 hover:border-teal transition-colors"
+                >
+                  <span className="flex items-baseline gap-2.5">
+                    <span className="font-mono text-xs font-semibold text-teal">
                       {bundle.nummer}
                     </span>
-                    <div>
-                      <h3 className="font-display font-bold text-[1.6rem] text-dark tracking-tight leading-none">
-                        {bundle.titel}
-                      </h3>
-                      <p className="text-muted-foreground text-sm mt-1.5">{bundle.intro}</p>
-                    </div>
-                  </div>
-                  <Link
-                    href={`/leistungen/${bundle.slug}`}
-                    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-dark/70 hover:text-teal transition-colors"
-                  >
-                    Ganzes Paket ansehen
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
-                </div>
-              </Reveal>
+                    <span className="font-display font-bold text-xl text-dark tracking-tight group-hover:text-teal transition-colors">
+                      {bundle.titel}
+                    </span>
+                  </span>
+                  <span className="font-mono text-xs font-semibold text-dark/45 whitespace-nowrap">
+                    ab {bundle.preisVon} €
+                  </span>
+                </Link>
 
-              {/* Leistungen des Pakets */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5 lg:gap-4">
-                {bundle.arbeiten.map((arbeit, i) => {
-                  const Icon = arbeit.icon
-                  return (
-                    <Reveal key={arbeit.id} delay={i * 0.05} y={20}>
-                      <Link
-                        href={`/leistungen/${bundle.slug}#${arbeit.id}`}
-                        className="group relative flex gap-4 h-full bg-background border border-border rounded-xl p-5 hover:border-teal/40 hover:bg-white hover:shadow-lg hover:shadow-dark/5 transition-all duration-300"
-                      >
-                        <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0 group-hover:bg-teal/15 transition-colors">
-                          <Icon className="w-5 h-5 text-teal" />
-                        </div>
-                        <div className="min-w-0">
-                          <h4 className="font-display font-bold text-[1.02rem] text-dark tracking-tight leading-snug mb-1 pr-5">
-                            {arbeit.titel}
-                          </h4>
-                          <p className="text-muted-foreground text-[0.85rem] leading-relaxed">
-                            {arbeit.kurz}
-                          </p>
-                        </div>
-                        <ArrowUpRight className="absolute top-4 right-4 w-4 h-4 text-dark/20 group-hover:text-teal group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-                      </Link>
-                    </Reveal>
-                  )
-                })}
+                {/* Leistungen als Liste */}
+                <ul className="divide-y divide-border">
+                  {bundle.arbeiten.map((arbeit) => {
+                    const Icon = arbeit.icon
+                    return (
+                      <li key={arbeit.id}>
+                        <Link
+                          href={`/leistungen/${bundle.slug}#${arbeit.id}`}
+                          className="group flex items-start gap-3.5 py-3.5 -mx-2 px-2 rounded-lg hover:bg-background transition-colors"
+                        >
+                          <Icon className="w-[18px] h-[18px] text-teal shrink-0 mt-0.5" />
+                          <span className="min-w-0 flex-1">
+                            <span className="block font-semibold text-[0.96rem] text-dark leading-snug group-hover:text-teal transition-colors">
+                              {arbeit.titel}
+                            </span>
+                            <span className="block text-muted-foreground text-[0.82rem] leading-snug mt-0.5">
+                              {arbeit.kurz}
+                            </span>
+                          </span>
+                          <ArrowRight className="w-4 h-4 text-dark/15 shrink-0 mt-0.5 group-hover:text-teal group-hover:translate-x-0.5 transition-all" />
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

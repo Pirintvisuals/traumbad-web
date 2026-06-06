@@ -74,7 +74,7 @@ export function Leistungen() {
             transition={{ duration: 0.5, ease }}
             className="inline-block text-teal text-xs font-bold uppercase tracking-[0.2em] mb-4"
           >
-            Was wir machen
+            Unsere Pakete
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -83,9 +83,9 @@ export function Leistungen() {
             transition={{ duration: 0.65, delay: 0.08, ease }}
             className="font-display font-bold text-[clamp(2rem,4vw,3.2rem)] text-dark leading-[1.1] tracking-tight mb-5"
           >
-            Drei Leistungen.
+            Drei Wege
             <br />
-            Ein Versprechen.
+            zum neuen Bad.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}

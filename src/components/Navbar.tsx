@@ -55,10 +55,10 @@ export function Navbar() {
         <div className="h-[3px] bg-teal w-full absolute top-0 left-0" />
 
         <div className="max-w-7xl mx-auto px-5 sm:px-8">
-          <div className="flex items-center justify-between h-[66px]">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center h-[66px]">
 
             {/* Logo — always dark, no inversion needed */}
-            <Link href="/" className="shrink-0 flex items-center pt-px">
+            <Link href="/" className="justify-self-start shrink-0 flex items-center pt-px">
               <Image
                 src="/logo.svg"
                 width={100}
@@ -69,8 +69,8 @@ export function Navbar() {
               />
             </Link>
 
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-1">
+            {/* Desktop nav — true-centered via the middle grid column */}
+            <nav className="hidden lg:flex justify-self-center items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -84,13 +84,13 @@ export function Navbar() {
               ))}
             </nav>
 
-            {/* Right: separator + phone + CTA */}
-            <div className="flex items-center gap-4">
+            {/* Right: phone + CTA */}
+            <div className="justify-self-end flex items-center gap-2 sm:gap-3 lg:gap-4">
 
               {/* Vertical divider */}
               <div className="hidden lg:block w-px h-5 bg-dark/12" />
 
-              {/* Phone — CTA accent to draw the eye */}
+              {/* Phone (text) — CTA accent, from md up */}
               <a
                 href="tel:+436606304703"
                 className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-cta hover:text-cta-dark transition-colors duration-200 cursor-pointer"
@@ -107,10 +107,19 @@ export function Navbar() {
                 Angebot anfragen
               </Link>
 
+              {/* Phone (icon) — below md, so the number is reachable on every screen size */}
+              <a
+                href="tel:+436606304703"
+                className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-cta hover:bg-cta/10 transition-colors cursor-pointer"
+                aria-label="Anrufen: +43 660 630 4703"
+              >
+                <Phone className="w-5 h-5" />
+              </a>
+
               {/* Hamburger */}
               <button
                 onClick={() => setMobileOpen(true)}
-                className="lg:hidden p-2 -mr-1 text-dark/60 hover:text-dark cursor-pointer transition-colors"
+                className="lg:hidden inline-flex items-center justify-center w-10 h-10 -mr-1 text-dark/60 hover:text-dark cursor-pointer transition-colors"
                 aria-label="Menü öffnen"
               >
                 <Menu className="w-5 h-5" />
