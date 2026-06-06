@@ -192,46 +192,54 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
           </div>
 
           <div className="space-y-5 lg:space-y-6">
-            {bundle.arbeiten.map((arbeit, i) => (
-              <Reveal key={arbeit.titel} delay={i * 0.05}>
-                <div className="group bg-white border border-border rounded-2xl p-7 lg:p-9 hover:shadow-xl hover:shadow-dark/5 transition-all duration-400">
-                  <div className="grid lg:grid-cols-[auto_1fr] gap-5 lg:gap-9">
-                    {/* Number */}
-                    <div className="flex lg:flex-col items-center lg:items-start gap-4">
-                      <span className="font-mono font-bold text-2xl text-teal tabular-nums">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="hidden lg:block w-px flex-1 bg-border group-hover:bg-teal/30 transition-colors" />
-                    </div>
+            {bundle.arbeiten.map((arbeit, i) => {
+              const Icon = arbeit.icon
+              return (
+                <Reveal key={arbeit.titel} delay={i * 0.05}>
+                  <div
+                    id={arbeit.id}
+                    className="group relative bg-white border border-border rounded-2xl p-7 lg:p-9 overflow-hidden hover:border-teal/30 hover:shadow-xl hover:shadow-dark/5 transition-all duration-400 scroll-mt-28"
+                  >
+                    {/* Index watermark */}
+                    <span className="absolute top-6 right-7 font-display font-bold text-6xl text-dark/[0.03] select-none leading-none tabular-nums">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
 
-                    <div>
-                      <h3 className="font-display font-bold text-[1.4rem] text-dark mb-5 tracking-tight">
+                    {/* Header: icon + title */}
+                    <div className="flex items-center gap-4 mb-7">
+                      <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center shrink-0 group-hover:bg-teal/15 transition-colors duration-300">
+                        <Icon className="w-6 h-6 text-teal" />
+                      </div>
+                      <h3 className="font-display font-bold text-[1.4rem] text-dark tracking-tight leading-tight">
                         {arbeit.titel}
                       </h3>
+                    </div>
 
-                      <div className="grid sm:grid-cols-2 gap-6 lg:gap-10">
-                        <div>
-                          <span className="inline-block text-[0.7rem] font-bold uppercase tracking-[0.16em] text-dark/40 mb-2.5">
-                            Was ist das?
-                          </span>
-                          <p className="text-muted-foreground leading-relaxed text-[0.96rem]">
-                            {arbeit.was}
-                          </p>
-                        </div>
-                        <div className="sm:border-l sm:border-border sm:pl-6 lg:pl-10">
-                          <span className="inline-block text-[0.7rem] font-bold uppercase tracking-[0.16em] text-teal mb-2.5">
-                            Das machen wir
-                          </span>
-                          <p className="text-muted-foreground leading-relaxed text-[0.96rem]">
-                            {arbeit.wir}
-                          </p>
-                        </div>
+                    <div className="grid sm:grid-cols-2 gap-6 lg:gap-10">
+                      <div>
+                        <span className="inline-block text-[0.7rem] font-bold uppercase tracking-[0.16em] text-dark/40 mb-2.5">
+                          Was ist das?
+                        </span>
+                        <p className="text-muted-foreground leading-relaxed text-[0.96rem]">
+                          {arbeit.was}
+                        </p>
+                      </div>
+                      <div className="sm:border-l sm:border-border sm:pl-6 lg:pl-10">
+                        <span className="inline-block text-[0.7rem] font-bold uppercase tracking-[0.16em] text-teal mb-2.5">
+                          Das machen wir
+                        </span>
+                        <p className="text-muted-foreground leading-relaxed text-[0.96rem]">
+                          {arbeit.wir}
+                        </p>
                       </div>
                     </div>
+
+                    {/* Animated bottom border */}
+                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-teal origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-b-2xl" />
                   </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              )
+            })}
           </div>
         </div>
       </section>
