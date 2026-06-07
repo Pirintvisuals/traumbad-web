@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Leistungen } from "@/components/Leistungen"
+import { Leistungsverzeichnis } from "@/components/Leistungsverzeichnis"
 import { Reveal } from "@/components/Reveal"
 
 export const metadata: Metadata = {
@@ -47,15 +48,16 @@ export default function LeistungenPage() {
           <Reveal delay={0.08}>
             <p className="text-white/55 text-lg leading-relaxed max-w-2xl">
               Drei Pakete — von der schnellen Frischekur bis zur kompletten Sanierung.
-              Wählen Sie, was zu Ihrem Vorhaben passt; auf der jeweiligen Paketseite
-              erklären wir jede Leistung im Detail. Der Preis steht vorher fest.
+              Wählen Sie, was zu Ihrem Vorhaben passt, oder sehen Sie sich weiter unten
+              jede einzelne Leistung im Detail an. Der Preis steht vorher fest.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* Die drei Pakete */}
+      {/* Die drei Pakete + vollständiges Leistungsverzeichnis */}
       <Leistungen />
+      <Leistungsverzeichnis />
 
       <Footer />
     </main>
