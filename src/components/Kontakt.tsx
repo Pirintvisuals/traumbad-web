@@ -1,8 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle, ImagePlus, X } from "lucide-react"
+
+const MAX_FOTOS = 5
+const MAX_GROESSE = 10 * 1024 * 1024 // 10 MB pro Bild
+
+type Upload = { file: File; url: string }
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
@@ -16,6 +21,8 @@ const kontaktInfo = [
 export function Kontakt() {
   const [gesendet, setGesendet] = useState(false)
   const [laden, setLaden] = useState(false)
+  const [uploads, setUploads] = useState<Upload[]>([])
+  const [uploadFehler, setUploadFehler] = useState<string | null>(null)
   const [form, setForm] = useState({
     name: "", telefon: "", email: "", leistung: "", nachricht: "",
   })
@@ -24,10 +31,50 @@ export function Kontakt() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
 
+  const addDateien = (liste: FileList | null) => {
+    if (!liste || liste.length === 0) return
+    setUploadFehler(null)
+    setUploads((vorher) => {
+      const neu: Upload[] = []
+      for (const file of Array.from(liste)) {
+        if (!file.type.startsWith("image/")) {
+          setUploadFehler("Bitte nur Bilddateien (JPG, PNG) hochladen.")
+          continue
+        }
+        if (file.size > MAX_GROESSE) {
+          setUploadFehler("Jedes Bild darf höchstens 10 MB groß sein.")
+          continue
+        }
+        if (vorher.length + neu.length >= MAX_FOTOS) {
+          setUploadFehler(`Maximal ${MAX_FOTOS} Bilder.`)
+          break
+        }
+        neu.push({ file, url: URL.createObjectURL(file) })
+      }
+      return [...vorher, ...neu]
+    })
+  }
+
+  const entferneDatei = (index: number) => {
+    setUploadFehler(null)
+    setUploads((vorher) => {
+      const ziel = vorher[index]
+      if (ziel) URL.revokeObjectURL(ziel.url)
+      return vorher.filter((_, i) => i !== index)
+    })
+  }
+
+  // Object-URLs beim Unmount freigeben
+  useEffect(() => {
+    return () => uploads.forEach((u) => URL.revokeObjectURL(u.url))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLaden(true)
-    // TODO: replace with Formspree/Resend/API route
+    // TODO: Backend anbinden (Formspree/Resend/API-Route). Bilder als
+    // multipart/form-data mitsenden — uploads[].file enthält die Dateien.
     await new Promise((r) => setTimeout(r, 900))
     setLaden(false)
     setGesendet(true)
@@ -189,6 +236,70 @@ export function Kontakt() {
                     placeholder="Größe des Bades, aktuelle Situation, besondere Wünsche oder Fragen …"
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-dark placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-colors text-sm resize-none"
                   />
+                </div>
+
+                {/* Foto-Upload */}
+                <div>
+                  <label className="block text-sm font-semibold text-dark mb-1.5">
+                    Fotos Ihres Bades{" "}
+                    <span className="text-muted-foreground font-normal">(optional)</span>
+                  </label>
+
+                  <label
+                    htmlFor="fotos"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      addDateien(e.dataTransfer.files)
+                    }}
+                    className="flex flex-col items-center justify-center gap-2 w-full px-4 py-7 rounded-lg border-2 border-dashed border-input bg-background hover:border-teal/50 hover:bg-teal/[0.03] cursor-pointer transition-colors text-center"
+                  >
+                    <ImagePlus className="w-6 h-6 text-teal" />
+                    <span className="text-sm text-dark/70">
+                      <span className="font-semibold text-teal">Foto auswählen</span> oder hierher ziehen
+                    </span>
+                    <span className="text-xs text-muted-foreground/60">
+                      JPG oder PNG · bis zu {MAX_FOTOS} Bilder
+                    </span>
+                    <input
+                      id="fotos"
+                      name="fotos"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={(e) => {
+                        addDateien(e.target.files)
+                        e.target.value = ""
+                      }}
+                    />
+                  </label>
+
+                  {uploadFehler && (
+                    <p className="mt-2 text-xs text-destructive">{uploadFehler}</p>
+                  )}
+
+                  {uploads.length > 0 && (
+                    <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+                      {uploads.map((u, i) => (
+                        <div
+                          key={u.url}
+                          className="group relative aspect-square rounded-lg overflow-hidden border border-border"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={u.url} alt={u.file.name} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => entferneDatei(i)}
+                            aria-label={`${u.file.name} entfernen`}
+                            className="absolute top-1 right-1 w-6 h-6 flex items-center justify-center rounded-full bg-dark/70 text-white hover:bg-dark transition-colors cursor-pointer"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <button
