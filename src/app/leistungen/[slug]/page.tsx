@@ -126,7 +126,7 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
               <Reveal delay={0.3}>
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    href="/#kontakt"
+                    href="/kontakt"
                     className="inline-flex items-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
                   >
                     Kostenvoranschlag anfragen
@@ -342,7 +342,7 @@ export default async function BundlePage(props: PageProps<"/leistungen/[slug]">)
                   </p>
 
                   <Link
-                    href="/#kontakt"
+                    href="/kontakt"
                     className="inline-flex items-center justify-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors w-full sm:w-auto"
                   >
                     Anfrage stellen

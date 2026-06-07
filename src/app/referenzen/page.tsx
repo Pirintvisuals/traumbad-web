@@ -24,17 +24,21 @@ export default function ReferenzenPage() {
     <main>
       <Navbar />
 
-      {/* Hero */}
-      <section className="bg-dark pt-[120px] pb-16 lg:pt-[150px] lg:pb-20 relative overflow-hidden">
+      {/* Page header */}
+      <section className="relative bg-dark pt-[100px] pb-14 lg:pt-[120px] lg:pb-18 overflow-hidden">
         <div
           className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.10] pointer-events-none"
           style={{ background: "radial-gradient(circle at 75% 25%, #2ABFBF 0%, transparent 60%)" }}
         />
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8">
-          <Reveal>
-            <span className="inline-block text-teal text-xs font-bold uppercase tracking-[0.2em] mb-5">
-              Referenzen
-            </span>
+          <Reveal y={12}>
+            <nav aria-label="Brotkrümel" className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+              <Link href="/" className="text-white/45 hover:text-white transition-colors">
+                Start
+              </Link>
+              <span className="text-white/25">/</span>
+              <span className="text-teal font-medium">Referenzen</span>
+            </nav>
           </Reveal>
           <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-16 lg:items-end">
             <Reveal delay={0.06}>
@@ -73,7 +77,7 @@ export default function ReferenzenPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <Link
-                href="/#kontakt"
+                href="/kontakt"
                 className="inline-flex items-center justify-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
               >
                 Anfrage stellen

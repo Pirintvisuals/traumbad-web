@@ -10,7 +10,7 @@ const navLinks = [
   { href: "/leistungen", label: "Leistungen" },
   { href: "/referenzen", label: "Referenzen" },
   { href: "/ueber-uns", label: "Über uns" },
-  { href: "/#kontakt", label: "Kontakt" },
+  { href: "/kontakt", label: "Kontakt" },
 ]
 
 export function Navbar() {
@@ -100,7 +100,7 @@ export function Navbar() {
 
               {/* CTA */}
               <Link
-                href="/#kontakt"
+                href="/kontakt"
                 className="hidden sm:inline-flex items-center bg-cta hover:bg-cta-dark text-white text-sm font-semibold px-5 py-2.5 rounded-md shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
               >
                 Angebot anfragen
@@ -179,7 +179,7 @@ export function Navbar() {
                 +43 660 630 4703
               </a>
               <Link
-                href="/#kontakt"
+                href="/kontakt"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center bg-cta text-white font-semibold py-3.5 px-4 rounded-md hover:bg-cta-dark transition-colors cursor-pointer shadow-sm"
               >

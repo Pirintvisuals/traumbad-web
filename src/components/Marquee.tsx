@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion"
 
 const signals = [
   "Festpreisgarantie",
-  "Meisterbetrieb",
+  "Inhabergeführt",
   "Burgenland & Wien",
   "Komplettsanierung",
   "Barrierefreies Bad",

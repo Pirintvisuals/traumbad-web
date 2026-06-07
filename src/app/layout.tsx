@@ -28,18 +28,18 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://traumbad.eu"),
   title: "TraumBad Installations – Badrenovierung Burgenland",
   description:
-    "Premium-Badrenovierungen in Burgenland & Wien. Komplettsanierung, Teilrenovierung und barrierefreie Bäder – immer zum Festpreis. Meisterbetrieb aus dem Burgenland.",
+    "Premium-Badrenovierungen in Burgenland & Wien. Komplettsanierung, Teilrenovierung und barrierefreie Bäder – immer zum Festpreis. Inhabergeführter Betrieb aus dem Burgenland.",
   keywords: [
     "Badrenovierung Burgenland",
     "Badsanierung Wien",
     "Festpreis Badsanierung",
-    "Meisterbetrieb Bad",
+    "Festpreis Badezimmer",
     "Badezimmer renovieren",
     "barrierefreies Bad",
   ],
   openGraph: {
     title: "TraumBad Installations – Badrenovierung Burgenland",
-    description: "Premium-Badrenovierungen zum Festpreis. Meisterbetrieb aus dem Burgenland.",
+    description: "Premium-Badrenovierungen zum Festpreis. Inhabergeführter Betrieb aus dem Burgenland.",
     locale: "de_AT",
     type: "website",
   },

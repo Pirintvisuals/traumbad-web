@@ -2,23 +2,23 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
-import { Leistungen } from "@/components/Leistungen"
+import { Kontakt } from "@/components/Kontakt"
 import { Reveal } from "@/components/Reveal"
 
 export const metadata: Metadata = {
-  title: "Leistungen – Badsanierung zum Festpreis | TraumBad",
+  title: "Kontakt – Kostenloses Festpreisangebot | TraumBad",
   description:
-    "Alle Leistungen von TraumBad auf einen Blick: drei Pakete von der Frischekur bis zur Komplettsanierung — und jede einzelne Arbeit, verständlich erklärt. Alles zum Festpreis.",
+    "Schildern Sie kurz Ihr Vorhaben — wir antworten innerhalb von 24 Stunden mit einem verbindlichen Festpreisangebot. Inhabergeführt, Burgenland & Wien.",
   openGraph: {
-    title: "Leistungen – Badsanierung zum Festpreis | TraumBad",
+    title: "Kontakt – Kostenloses Festpreisangebot | TraumBad",
     description:
-      "Drei Pakete von der Frischekur bis zur Komplettsanierung — und jede einzelne Leistung, verständlich erklärt.",
+      "In 24 Stunden zum verbindlichen Festpreisangebot. Unverbindlich und kostenlos.",
     locale: "de_AT",
     type: "website",
   },
 }
 
-export default function LeistungenPage() {
+export default function KontaktPage() {
   return (
     <main>
       <Navbar />
@@ -36,26 +36,24 @@ export default function LeistungenPage() {
                 Start
               </Link>
               <span className="text-white/25">/</span>
-              <span className="text-teal font-medium">Leistungen</span>
+              <span className="text-teal font-medium">Kontakt</span>
             </nav>
           </Reveal>
           <Reveal>
             <h1 className="font-display font-bold text-[clamp(2.4rem,5.5vw,4rem)] text-white leading-[1.05] tracking-tight mb-4 max-w-3xl">
-              Alles für Ihr neues Bad — zum Festpreis.
+              Schreiben Sie uns. Wir melden uns.
             </h1>
           </Reveal>
           <Reveal delay={0.08}>
             <p className="text-white/55 text-lg leading-relaxed max-w-2xl">
-              Drei Pakete — von der schnellen Frischekur bis zur kompletten Sanierung.
-              Wählen Sie, was zu Ihrem Vorhaben passt; auf der jeweiligen Paketseite
-              erklären wir jede Leistung im Detail. Der Preis steht vorher fest.
+              Schildern Sie kurz Ihr Vorhaben — wir antworten innerhalb von 24 Stunden mit
+              einem konkreten Festpreisangebot. Unverbindlich und kostenlos.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* Die drei Pakete */}
-      <Leistungen />
+      <Kontakt />
 
       <Footer />
     </main>

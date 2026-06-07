@@ -34,7 +34,7 @@ export function Kontakt() {
   }
 
   return (
-    <section id="kontakt" className="bg-background py-24 lg:py-32">
+    <section id="kontakt" className="bg-background pt-16 pb-24 lg:pt-20 lg:pb-28">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20">
 
@@ -46,18 +46,9 @@ export function Kontakt() {
             transition={{ duration: 0.7, ease }}
             className="lg:col-span-2 flex flex-col"
           >
-            <span className="text-teal text-xs font-bold uppercase tracking-[0.2em] mb-4">
-              Kontakt
+            <span className="text-teal text-xs font-bold uppercase tracking-[0.2em] mb-6">
+              So erreichen Sie uns
             </span>
-            <h2 className="font-display font-bold text-[clamp(2rem,4vw,3rem)] text-dark leading-[1.1] tracking-tight mb-5">
-              Schreiben Sie uns.
-              <br />
-              Wir melden uns.
-            </h2>
-            <p className="text-muted-foreground text-[1.05rem] leading-relaxed mb-10">
-              Schildern Sie kurz Ihr Vorhaben — wir antworten innerhalb von 24 Stunden
-              mit einem konkreten Festpreisangebot. Unverbindlich und kostenlos.
-            </p>
 
             <div className="space-y-5 mb-10">
               {kontaktInfo.map((item) => {

@@ -32,16 +32,20 @@ export default function UeberUnsPage() {
     <main>
       <Navbar />
 
-      {/* Hero */}
-      <section className="bg-background pt-[120px] pb-16 lg:pt-[150px] lg:pb-24">
+      {/* Page header */}
+      <section className="bg-background pt-[100px] pb-16 lg:pt-[120px] lg:pb-24">
         <div className="max-w-7xl mx-auto px-5 sm:px-8">
+          <Reveal y={12}>
+            <nav aria-label="Brotkrümel" className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+              <Link href="/" className="text-dark/40 hover:text-dark transition-colors">
+                Start
+              </Link>
+              <span className="text-dark/25">/</span>
+              <span className="text-teal font-medium">Über uns</span>
+            </nav>
+          </Reveal>
           <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center">
             <div>
-              <Reveal>
-                <span className="inline-block text-teal text-xs font-bold uppercase tracking-[0.2em] mb-5">
-                  Über uns
-                </span>
-              </Reveal>
               <Reveal delay={0.06}>
                 <h1 className="font-display font-bold text-[clamp(2.4rem,5.5vw,4.2rem)] text-dark leading-[1.04] tracking-tight mb-6">
                   Klein, aber fein.
@@ -65,7 +69,7 @@ export default function UeberUnsPage() {
               <Reveal delay={0.24}>
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    href="/#kontakt"
+                    href="/kontakt"
                     className="inline-flex items-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
                   >
                     Anfrage stellen
@@ -274,7 +278,7 @@ export default function UeberUnsPage() {
                     unverbindliches Festpreisangebot — innerhalb von 24 Stunden.
                   </p>
                   <Link
-                    href="/#kontakt"
+                    href="/kontakt"
                     className="inline-flex items-center justify-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors w-full sm:w-auto"
                   >
                     Termin anfragen

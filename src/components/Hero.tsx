@@ -183,7 +183,7 @@ function Thumb({
       aria-current={active}
       className={[
         "relative shrink-0 cursor-pointer overflow-hidden rounded-lg transition-all duration-300",
-        active ? "opacity-100 ring-2 ring-teal ring-offset-2 ring-offset-[#F9F9F9]" : "opacity-45 hover:opacity-85",
+        active ? "opacity-100 ring-2 ring-teal ring-offset-2 ring-offset-background" : "opacity-45 hover:opacity-85",
         className,
       ].join(" ")}
     >
@@ -238,7 +238,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-[#F9F9F9] pt-[66px] lg:flex-row lg:items-stretch">
+    <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-background pt-[66px] lg:flex-row lg:items-stretch">
 
       {/* Ambient depth — faint grid + soft teal glows so the warm-white isn't flat */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -282,7 +282,7 @@ export function Hero() {
         >
           <span className="h-px w-8 bg-teal" />
           <span className="font-mono text-[0.66rem] font-medium uppercase tracking-[0.24em] text-dark/50">
-            Meisterbetrieb · Burgenland
+            Inhabergeführt · Burgenland
           </span>
         </motion.div>
 
@@ -336,7 +336,7 @@ export function Hero() {
           className="flex flex-col gap-3 sm:flex-row sm:items-center"
         >
           <Link
-            href="#kontakt"
+            href="/kontakt"
             className="group inline-flex items-center justify-center gap-2 rounded-md bg-cta px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-md transition-colors duration-300 hover:bg-cta-dark cursor-pointer"
           >
             Kostenvoranschlag anfordern
@@ -413,7 +413,7 @@ export function Hero() {
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[14px] bg-dark">
                 <Image src={nextFoto.src} alt="" fill sizes="560px" className="object-cover" />
-                <div className="absolute inset-0 bg-[#F9F9F9]/25" />
+                <div className="absolute inset-0 bg-background/25" />
               </div>
             </div>
 

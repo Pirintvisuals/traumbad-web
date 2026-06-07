@@ -6,7 +6,7 @@ const footerLinks = [
   { label: "Leistungen", href: "/leistungen" },
   { label: "Referenzen", href: "/referenzen" },
   { label: "Über uns", href: "/ueber-uns" },
-  { label: "Kontakt", href: "/#kontakt" },
+  { label: "Kontakt", href: "/kontakt" },
 ]
 
 const rechtlichLinks = [
@@ -35,8 +35,8 @@ export function Footer() {
               />
             </Link>
             <p className="text-white/40 text-sm leading-relaxed max-w-[280px] mb-7">
-              Premium-Badrenovierungen in Burgenland und Wien. Meisterbetrieb mit
-              Festpreisgarantie — transparent, zuverlässig, termingerecht.
+              Premium-Badrenovierungen in Burgenland und Wien. Inhabergeführter Betrieb
+              mit Festpreisgarantie — transparent, zuverlässig, termingerecht.
             </p>
             <div className="space-y-3">
               <a
@@ -113,7 +113,7 @@ export function Footer() {
             © {year} TraumBad Installations. Alle Rechte vorbehalten.
           </p>
           <p className="text-white/15 text-xs">
-            Meisterbetrieb · Burgenland · Österreich
+            Inhabergeführt · Burgenland · Österreich
           </p>
         </div>
       </div>
