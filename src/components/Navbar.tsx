@@ -69,7 +69,7 @@ export function Navbar() {
             </Link>
 
             {/* Desktop nav — true-centered via the middle grid column */}
-            <nav className="hidden lg:flex justify-self-center items-center gap-1">
+            <nav className="hidden lg:flex justify-self-center items-center gap-6 xl:gap-8">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
