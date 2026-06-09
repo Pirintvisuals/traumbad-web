@@ -5,7 +5,6 @@ import Link from "next/link"
 import Image from "next/image"
 import {
   motion,
-  AnimatePresence,
   useReducedMotion,
   useMotionValue,
   useSpring,
@@ -197,6 +196,22 @@ function Thumb({
   )
 }
 
+/* Where each card sits based on its distance from the front of the deck.
+   pos 0 = front; higher = further back. The old front animates to the
+   back-most slot on change, so it reads as being shuffled into the pack. */
+function deckSlot(pos: number) {
+  switch (pos) {
+    case 0:
+      return { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1 }
+    case 1:
+      return { x: 28, y: -16, scale: 0.945, rotate: 3, opacity: 0.6 }
+    case 2:
+      return { x: 50, y: -30, scale: 0.89, rotate: 5.5, opacity: 0.3 }
+    default:
+      return { x: 64, y: -42, scale: 0.85, rotate: 7.5, opacity: 0 }
+  }
+}
+
 export function Hero() {
   const reduced = useReducedMotion() ?? false
   const [index, setIndex] = useState(0)
@@ -206,13 +221,14 @@ export function Hero() {
   const go = (dir: number) => setIndex((i) => (i + dir + n) % n)
 
   const cur = projekte[index]
-  const nextFoto = projekte[(index + 1) % n]
   const isBA = cur.type === "ba" && !!cur.vorher && !!cur.after
 
-  /* Auto-advance (paused on hover, while interacting, or on the slider card) */
+  /* Auto-advance the deck (paused on hover / interaction). The before/after
+     card gets a longer dwell so visitors can play with the slider. */
   useEffect(() => {
-    if (reduced || paused || isBA) return
-    const t = setTimeout(() => setIndex((i) => (i + 1) % n), 5200)
+    if (reduced || paused) return
+    const dwell = isBA ? 7200 : 5200
+    const t = setTimeout(() => setIndex((i) => (i + 1) % n), dwell)
     return () => clearTimeout(t)
   }, [index, paused, reduced, isBA, n])
 
@@ -400,115 +416,101 @@ export function Hero() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={onLeave}
         >
-          {/* Photo stack */}
+          {/* Photo deck — on change, the front card shuffles to the back of the pack */}
           <motion.div
             className="relative w-full max-w-[500px] lg:max-w-[560px]"
             style={reduced ? undefined : { rotateX: rotX, rotateY: rotY, x: transX, transformStyle: "preserve-3d" }}
           >
-            {/* Depth card peeking behind */}
-            <div
-              aria-hidden
-              className="absolute -right-7 top-8 hidden w-full rounded-[22px] bg-white p-3 opacity-55 shadow-lg sm:block"
-              style={{ transform: "translateZ(-40px) rotate(2.5deg)" }}
-            >
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[14px] bg-dark">
-                <Image src={nextFoto.src} alt="" fill sizes="560px" className="object-cover" />
-                <div className="absolute inset-0 bg-background/25" />
-              </div>
-            </div>
+            <div className="relative aspect-[4/5] w-full" style={{ transformStyle: "preserve-3d" }}>
+              {projekte.map((p, i) => {
+                const pos = (i - index + n) % n
+                const slot = deckSlot(pos)
+                const front = pos === 0
+                const cardBA = p.type === "ba" && !!p.vorher && !!p.after
+                const zIndex = Math.max(0, 40 - pos * 10)
+                return (
+                  <motion.div
+                    key={p.src + i}
+                    initial={false}
+                    animate={slot}
+                    transition={
+                      reduced
+                        ? { duration: 0 }
+                        : { type: "spring", stiffness: 260, damping: 30, mass: 0.9 }
+                    }
+                    style={{ zIndex, pointerEvents: front ? "auto" : "none" }}
+                    onClick={() => {
+                      if (front && !cardBA) go(1)
+                    }}
+                    className={[
+                      "absolute inset-0 rounded-[22px] bg-white p-3 shadow-2xl ring-1 ring-black/5",
+                      front && !cardBA ? "cursor-pointer" : "",
+                    ].join(" ")}
+                  >
+                    <div className="relative h-full w-full overflow-hidden rounded-[14px] bg-dark">
+                      {cardBA && front ? (
+                        <VorherNachher
+                          vorher={p.vorher!}
+                          nachher={p.after!}
+                          alt={`${p.label} — Badsanierung in ${p.ort}`}
+                          reduced={reduced}
+                          placeholder
+                          onInteract={() => setPaused(true)}
+                        />
+                      ) : (
+                        <Image
+                          src={cardBA ? p.after! : p.src}
+                          alt={`${p.label} — Badsanierung in ${p.ort}`}
+                          fill
+                          priority={i === 0}
+                          sizes="(max-width: 1024px) 90vw, 560px"
+                          className="object-cover"
+                        />
+                      )}
 
-            {/* Front frame (matted card) */}
-            <motion.div
-              drag={reduced || isBA ? false : "x"}
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.16}
-              onDragStart={() => setPaused(true)}
-              onDragEnd={(_, info) => {
-                if (info.offset.x < -60) go(1)
-                else if (info.offset.x > 60) go(-1)
-              }}
-              className={[
-                "relative w-full rounded-[22px] bg-white p-3 shadow-2xl ring-1 ring-black/5",
-                isBA ? "" : "cursor-grab active:cursor-grabbing",
-              ].join(" ")}
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[14px] bg-dark">
-                {isBA ? (
-                  <VorherNachher
-                    vorher={cur.vorher!}
-                    nachher={cur.after!}
-                    alt={`${cur.label} — Badsanierung in ${cur.ort}`}
-                    reduced={reduced}
-                    placeholder
-                    onInteract={() => setPaused(true)}
-                  />
-                ) : (
-                  <AnimatePresence initial={false}>
-                    <motion.div
-                      key={index}
-                      initial={{ clipPath: "inset(0 0 0 100%)" }}
-                      animate={{ clipPath: "inset(0 0 0 0%)" }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: reduced ? 0 : 0.85, ease }}
-                      className="absolute inset-0"
-                    >
-                      <Image
-                        src={cur.src}
-                        alt={`${cur.label} — Badsanierung in ${cur.ort}`}
-                        fill
-                        sizes="(max-width: 1024px) 90vw, 560px"
-                        className="object-cover"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                )}
+                      {/* Gradient + caption — only on the front card */}
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent p-6 pt-16">
+                        {front && (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-[0.62rem] font-semibold tracking-[0.2em] text-teal">
+                                PROJEKT N°{String(i + 1).padStart(2, "0")}
+                              </span>
+                              <span className="h-px w-5 bg-white/30" />
+                              <span className="font-mono text-[0.62rem] tracking-[0.16em] text-white/55">
+                                {p.spec}
+                              </span>
+                            </div>
+                            <p className="mt-1.5 font-display text-xl font-semibold leading-tight text-white">
+                              {p.label}
+                              <span className="ml-2 text-base font-normal text-white/55">· {p.ort}</span>
+                            </p>
+                          </>
+                        )}
+                      </div>
 
-                {/* Gradient + caption */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent p-6 pt-16">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[0.62rem] font-semibold tracking-[0.2em] text-teal">
-                      PROJEKT N°{String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="h-px w-5 bg-white/30" />
-                    <span className="font-mono text-[0.62rem] tracking-[0.16em] text-white/55">
-                      {cur.spec}
-                    </span>
-                  </div>
-                  <AnimatePresence mode="wait">
-                    <motion.p
-                      key={index}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.4, ease }}
-                      className="mt-1.5 font-display text-xl font-semibold leading-tight text-white"
-                    >
-                      {cur.label}
-                      <span className="ml-2 text-base font-normal text-white/55">· {cur.ort}</span>
-                    </motion.p>
-                  </AnimatePresence>
-                </div>
-
-                {/* Auto-advance progress bar (hidden on the slider card) */}
-                {!isBA && (
-                  <div className="absolute inset-x-0 bottom-0 h-[3px] bg-white/15">
-                    <div
-                      key={`${index}-${paused}-${reduced}`}
-                      className="h-full origin-left bg-teal"
-                      style={
-                        reduced
-                          ? { transform: "scaleX(1)" }
-                          : {
-                              animation: "growBar 5.2s linear forwards",
-                              animationPlayState: paused ? "paused" : "running",
+                      {/* Auto-advance progress bar — front non-slider card only */}
+                      {front && !cardBA && (
+                        <div className="absolute inset-x-0 bottom-0 h-[3px] bg-white/15">
+                          <div
+                            key={`${index}-${paused}-${reduced}`}
+                            className="h-full origin-left bg-teal"
+                            style={
+                              reduced
+                                ? { transform: "scaleX(1)" }
+                                : {
+                                    animation: "growBar 5.2s linear forwards",
+                                    animationPlayState: paused ? "paused" : "running",
+                                  }
                             }
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-            </motion.div>
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
           </motion.div>
 
           {/* Mobile project rail (horizontal) */}
