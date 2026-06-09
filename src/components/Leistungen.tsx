@@ -62,11 +62,11 @@ const leistungen = [
 
 export function Leistungen({ showAllLink = false }: { showAllLink?: boolean }) {
   return (
-    <section id="leistungen" className="bg-background py-24 lg:py-32">
+    <section id="leistungen" className="bg-background py-16 sm:py-20 lg:py-32">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
 
         {/* Header */}
-        <div className="mb-16 lg:mb-20 max-w-2xl">
+        <div className="mb-12 lg:mb-20 max-w-2xl">
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -83,9 +83,7 @@ export function Leistungen({ showAllLink = false }: { showAllLink?: boolean }) {
             transition={{ duration: 0.65, delay: 0.08, ease }}
             className="font-display font-bold text-[clamp(2rem,4vw,3.2rem)] text-dark leading-[1.1] tracking-tight mb-5"
           >
-            Drei Wege
-            <br />
-            zum neuen Bad.
+            Drei Wege zum neuen Bad.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -110,7 +108,7 @@ export function Leistungen({ showAllLink = false }: { showAllLink?: boolean }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.65, delay: i * 0.12, ease }}
-                className="group relative bg-white border border-border rounded-2xl p-8 overflow-hidden hover:shadow-xl hover:shadow-dark/5 hover:-translate-y-1 transition-all duration-400"
+                className="group relative bg-white border border-border rounded-2xl p-7 sm:p-8 overflow-hidden hover:shadow-xl hover:shadow-dark/5 hover:-translate-y-1 transition-all duration-400"
               >
                 {/* Full-card link overlay */}
                 <Link

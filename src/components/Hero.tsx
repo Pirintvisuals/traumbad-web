@@ -254,11 +254,11 @@ export function Hero() {
         />
         <div
           className="absolute right-[-8%] top-1/2 h-[700px] w-[700px] -translate-y-1/2 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(42,191,191,0.12), transparent 65%)" }}
+          style={{ background: "radial-gradient(circle, color-mix(in srgb, var(--color-teal) 12%, transparent), transparent 65%)" }}
         />
         <div
           className="absolute -left-[10%] bottom-[-12%] h-[460px] w-[460px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(42,191,191,0.06), transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, color-mix(in srgb, var(--color-teal) 6%, transparent), transparent 70%)" }}
         />
       </div>
 
@@ -271,7 +271,7 @@ export function Hero() {
       </span>
 
       {/* ─────────── Left: editorial content ─────────── */}
-      <div className="relative z-10 flex w-full flex-col justify-center px-7 py-16 sm:px-16 lg:w-[42%] lg:px-16 lg:py-0 xl:px-20">
+      <div className="relative z-10 flex w-full flex-col justify-center px-7 py-12 sm:px-16 sm:py-16 lg:w-[42%] lg:px-16 lg:py-0 xl:px-20">
 
         {/* Kicker */}
         <motion.div
@@ -305,7 +305,7 @@ export function Hero() {
             >
               <motion.path
                 d="M2 7C45 3 110 2 160 5C210 8 260 9 298 4"
-                stroke="#2ABFBF"
+                stroke="var(--color-teal)"
                 strokeWidth="3"
                 strokeLinecap="round"
                 initial={{ pathLength: 0, opacity: 0 }}
@@ -356,7 +356,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="mt-10 flex items-center gap-5 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dark/40"
+          className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-dark/40"
         >
           <span><span className="text-teal">10+</span> Jahre</span>
           <span className="h-3 w-px bg-dark/15" />

@@ -28,7 +28,7 @@ export function Marquee() {
     <motion.div
       ref={ref}
       style={{ opacity }}
-      className="bg-[#EFEFED] border-y border-dark/8 py-4 overflow-hidden"
+      className="bg-strip border-y border-dark/8 py-4 overflow-hidden"
     >
       <motion.div
         animate={{ x: ["0%", "-50%"] }}

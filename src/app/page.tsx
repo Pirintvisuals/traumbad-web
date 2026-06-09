@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar"
 import { Hero } from "@/components/Hero"
 import { Marquee } from "@/components/Marquee"
+import { Zahlen } from "@/components/Zahlen"
 import { Leistungen } from "@/components/Leistungen"
 import { Staerken } from "@/components/Staerken"
 import { Galerie } from "@/components/Galerie"
@@ -14,6 +15,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Marquee />
+      <Zahlen />
       <Leistungen showAllLink />
       <Staerken />
       <Galerie />

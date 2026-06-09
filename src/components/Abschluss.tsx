@@ -11,7 +11,7 @@ export function Abschluss() {
     <section className="bg-background py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl bg-dark px-8 py-14 sm:px-14 lg:px-20 lg:py-20">
+          <div className="relative overflow-hidden rounded-2xl bg-dark px-7 py-12 sm:px-14 sm:py-16 lg:px-20 lg:py-20">
             {/* Teal glow — same language as the page headers */}
             <div
               className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.12] pointer-events-none"

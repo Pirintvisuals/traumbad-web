@@ -21,6 +21,9 @@
   /* Single accent system: CTAs use the brand teal — no second competing colour. */
   --cta: #2ABFBF;
   --cta-dark: #1D9A9A;
+  /* Surfaces & overlays — kept here so components never hardcode hex (project rule). */
+  --strip: #EFEDE7;                  /* thin marquee band, warm to match the system */
+  --overlay-dark: rgba(22, 28, 28, 0.97); /* gallery lightbox backdrop */
 }
 
 @theme inline {
@@ -45,6 +48,8 @@
   --color-cta-dark: var(--cta-dark);
   --color-dark: #1C1C1C;
   --color-dark-surface: #242424;
+  --color-strip: var(--strip);
+  --color-overlay-dark: var(--overlay-dark);
   --font-display: var(--font-bricolage);
   --font-sans: var(--font-source);
   --font-mono: var(--font-jetbrains);
@@ -80,6 +85,16 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-bricolage), system-ui, sans-serif;
   letter-spacing: -0.02em;
+}
+
+/* Keyboard focus — links/buttons had hover states but no visible focus ring.
+   Mouse clicks stay clean (:focus-visible), keyboard users get a clear teal ring. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+  border-radius: var(--radius);
 }
 
 @keyframes floatDot {

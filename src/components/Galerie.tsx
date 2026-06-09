@@ -36,7 +36,7 @@ export function Galerie() {
   return (
     <section
       id="galerie"
-      className="relative bg-dark py-24 lg:py-32"
+      className="relative bg-dark py-16 sm:py-20 lg:py-32"
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
 
@@ -52,12 +52,14 @@ export function Galerie() {
             >
               Unsere Arbeiten
             </motion.span>
+            {/* Clip-wipe reveal — a different arrival than the fade-ups elsewhere,
+                so the dark gallery reads as the page's main visual beat. */}
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+              whileInView={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.65, delay: 0.08, ease }}
-              className="font-display font-bold text-[clamp(2rem,4vw,3.2rem)] text-white leading-[1.08] tracking-tight"
+              transition={{ duration: 0.85, delay: 0.08, ease }}
+              className="font-display font-bold text-[clamp(2.2rem,4.6vw,3.8rem)] text-white leading-[1.06] tracking-tight"
             >
               Handwerk,
               <br />
@@ -146,7 +148,7 @@ export function Galerie() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[100] flex items-center justify-center cursor-default"
-            style={{ background: "rgba(22, 28, 28, 0.97)" }}
+            style={{ background: "var(--overlay-dark)" }}
             onClick={close}
           >
             {/* Top bar */}

@@ -38,50 +38,46 @@ const bewertungen = [
 
 export function Bewertungen() {
   return (
-    <section id="bewertungen" className="relative bg-white py-24 lg:py-32 overflow-hidden">
+    <section id="bewertungen" className="relative bg-white py-16 sm:py-20 lg:py-32 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8">
 
-        {/* Header */}
-        <div className="mb-14 lg:mb-18 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <div>
-            <motion.span
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease }}
-              className="inline-block text-teal text-xs font-bold uppercase tracking-[0.2em] mb-4"
-            >
-              Kundenstimmen
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.65, delay: 0.08, ease }}
-              className="font-display font-bold text-[clamp(2rem,4vw,3.2rem)] text-dark leading-[1.1] tracking-tight"
-            >
-              Was unsere Kunden
-              <br />
-              wirklich sagen.
-            </motion.h2>
-          </div>
+        {/* Header — centered, with the rating pulled up as the focal element
+            (the other sections lead with a left-aligned eyebrow; this one differs). */}
+        <div className="mb-14 lg:mb-18 flex flex-col items-center text-center">
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15, ease }}
-            className="flex items-center gap-3 shrink-0"
+            transition={{ duration: 0.6, ease }}
+            className="inline-flex items-center gap-3 rounded-full border border-border bg-background px-4 py-2 mb-7"
           >
             <div className="flex">
               {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} className="w-5 h-5 fill-teal text-teal" />
+                <Star key={i} className="w-4 h-4 fill-teal text-teal" />
               ))}
             </div>
-            <div>
-              <div className="font-display font-bold text-dark text-lg leading-none">5,0</div>
-              <div className="text-muted-foreground text-xs mt-0.5">Google Bewertungen</div>
-            </div>
+            <span className="font-mono font-bold text-dark text-sm leading-none">5,0</span>
+            <span className="h-3 w-px bg-border" />
+            <span className="text-muted-foreground text-xs">aus Kundenbewertungen</span>
           </motion.div>
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.05, ease }}
+            className="block text-teal text-xs font-bold uppercase tracking-[0.2em] mb-4"
+          >
+            Kundenstimmen
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65, delay: 0.12, ease }}
+            className="font-display font-bold text-[clamp(2rem,4vw,3.2rem)] text-dark leading-[1.1] tracking-tight max-w-2xl"
+          >
+            Was unsere Kunden wirklich sagen.
+          </motion.h2>
         </div>
 
         {/* Cards grid */}
@@ -126,7 +122,7 @@ export function Bewertungen() {
           transition={{ delay: 0.4 }}
           className="text-center text-muted-foreground/50 text-xs mt-10"
         >
-          Echte Bewertungen von echten Kunden. Verifiziert via Google.
+          Echte Rückmeldungen aus abgeschlossenen Projekten in Burgenland &amp; Wien.
         </motion.p>
       </div>
     </section>

@@ -9,11 +9,11 @@ const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 export function Staerken() {
   return (
-    <section id="staerken" className="bg-white py-24 lg:py-32 border-b border-border">
+    <section id="staerken" className="bg-white py-16 sm:py-20 lg:py-32 border-b border-border">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
 
         {/* Header */}
-        <div className="mb-16 lg:mb-20 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <div className="mb-12 lg:mb-20 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div className="max-w-2xl">
             <motion.span
               initial={{ opacity: 0, y: 12 }}
@@ -31,9 +31,7 @@ export function Staerken() {
               transition={{ duration: 0.65, delay: 0.08, ease }}
               className="font-display font-bold text-[clamp(2rem,4vw,3.2rem)] text-dark leading-[1.1] tracking-tight mb-5"
             >
-              Klein, aber fein.
-              <br />
-              Und kompromisslos gründlich.
+              Klein, aber fein — und kompromisslos gründlich.
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -64,29 +62,30 @@ export function Staerken() {
           </motion.div>
         </div>
 
-        {/* Strength grid */}
+        {/* Strength grid — numbered, typographic (no icon chips: those live in
+            Leistungen, and repeating them here made the two sections read as one). */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border rounded-2xl overflow-hidden">
-          {staerken.map((s, i) => {
-            const Icon = s.icon
-            return (
-              <motion.div
-                key={s.titel}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease }}
-                className="group bg-white p-8 lg:p-9 hover:bg-background transition-colors duration-300"
-              >
-                <div className="w-12 h-12 bg-teal/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-teal/15 transition-colors duration-300">
-                  <Icon className="w-6 h-6 text-teal" />
-                </div>
-                <h3 className="font-display font-bold text-[1.2rem] text-dark mb-3 tracking-tight">
-                  {s.titel}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed text-[0.95rem]">{s.text}</p>
-              </motion.div>
-            )
-          })}
+          {staerken.map((s, i) => (
+            <motion.div
+              key={s.titel}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease }}
+              className="group relative bg-white p-7 lg:p-9 hover:bg-background transition-colors duration-300"
+            >
+              <div className="flex items-baseline gap-3 mb-4">
+                <span className="font-mono font-semibold text-sm text-teal tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="h-px flex-1 bg-border group-hover:bg-teal/30 transition-colors duration-300" />
+              </div>
+              <h3 className="font-display font-bold text-[1.2rem] text-dark mb-3 tracking-tight">
+                {s.titel}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed text-[0.95rem]">{s.text}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
