@@ -3,8 +3,11 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, Phone, X } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Phone, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+
+const ease = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 const navLinks = [
   { href: "/leistungen", label: "Leistungen" },
@@ -12,6 +15,41 @@ const navLinks = [
   { href: "/ueber-uns", label: "Über uns" },
   { href: "/kontakt", label: "Kontakt" },
 ]
+
+/* Single morphing control: three bars that animate into an X when the
+   drawer opens. Lives in the header (above the drawer) so it doubles as
+   the close button — no separate X needed. */
+function MenuToggle({ open, onClick }: { open: boolean; onClick: () => void }) {
+  const t = { duration: 0.32, ease }
+  return (
+    <button
+      onClick={onClick}
+      className="lg:hidden relative inline-flex h-10 w-10 -mr-1 items-center justify-center rounded-md text-dark/70 hover:text-dark hover:bg-dark/5 transition-colors cursor-pointer"
+      aria-label={open ? "Menü schließen" : "Menü öffnen"}
+      aria-expanded={open}
+    >
+      <span className="relative block h-[14px] w-[22px]">
+        <motion.span
+          className="absolute left-0 top-0 h-[2px] w-full rounded-full bg-current"
+          style={{ transformOrigin: "center" }}
+          animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+          transition={t}
+        />
+        <motion.span
+          className="absolute left-0 top-1/2 h-[2px] w-full -translate-y-1/2 rounded-full bg-current"
+          animate={open ? { opacity: 0, scaleX: 0.4 } : { opacity: 1, scaleX: 1 }}
+          transition={{ duration: 0.2, ease }}
+        />
+        <motion.span
+          className="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-current"
+          style={{ transformOrigin: "center" }}
+          animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+          transition={t}
+        />
+      </span>
+    </button>
+  )
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -23,7 +61,8 @@ export function Navbar() {
     const onScroll = () => {
       const current = window.scrollY
       setScrolled(current > 50)
-      if (current > prevScrollY.current && current > 120) {
+      // Don't auto-hide the bar while the drawer is open (the toggle lives in it).
+      if (!mobileOpen && current > prevScrollY.current && current > 120) {
         setHidden(true)
       } else {
         setHidden(false)
@@ -32,11 +71,19 @@ export function Navbar() {
     }
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+  }, [mobileOpen])
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
+  }, [mobileOpen])
+
+  // Close on Escape.
+  useEffect(() => {
+    if (!mobileOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMobileOpen(false) }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
   }, [mobileOpen])
 
   return (
@@ -45,7 +92,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           hidden ? "-translate-y-full" : "translate-y-0",
-          scrolled
+          scrolled || mobileOpen
             ? "bg-white shadow-[0_2px_24px_rgba(0,0,0,0.07)] border-b border-dark/8"
             : "bg-white/85 backdrop-blur-md border-b border-dark/6"
         )}
@@ -57,7 +104,7 @@ export function Navbar() {
           <div className="grid grid-cols-[1fr_auto_1fr] items-center h-[66px]">
 
             {/* Logo — always dark, no inversion needed */}
-            <Link href="/" className="justify-self-start shrink-0 flex items-center pt-px">
+            <Link href="/" className="justify-self-start shrink-0 flex items-center pt-px" onClick={() => setMobileOpen(false)}>
               <Image
                 src="/logo.svg"
                 width={100}
@@ -115,80 +162,96 @@ export function Navbar() {
                 <Phone className="w-5 h-5" />
               </a>
 
-              {/* Hamburger */}
-              <button
-                onClick={() => setMobileOpen(true)}
-                className="lg:hidden inline-flex items-center justify-center w-10 h-10 -mr-1 text-dark/60 hover:text-dark cursor-pointer transition-colors"
-                aria-label="Menü öffnen"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
+              {/* Animated hamburger — toggles + morphs to X */}
+              <MenuToggle open={mobileOpen} onClick={() => setMobileOpen((o) => !o)} />
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-dark/50 backdrop-blur-sm"
+      {/* Mobile drawer — sits below the header (pt clears the 66px bar) so the
+          morphing toggle stays visible and acts as the close control.
+          Backdrop + panel are direct keyed children of AnimatePresence so their
+          exit animations actually play on close. */}
+      <AnimatePresence>
+        {mobileOpen && [
+          /* Backdrop */
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease }}
+            className="fixed inset-0 z-40 bg-dark/50 backdrop-blur-sm lg:hidden"
             onClick={() => setMobileOpen(false)}
-          />
-          <div className="absolute top-0 right-0 bottom-0 w-[300px] bg-white flex flex-col shadow-2xl">
+          />,
 
-            {/* Teal top stripe in drawer */}
-            <div className="h-[3px] bg-teal w-full" />
-
-            <div className="flex items-center justify-between px-6 h-16 border-b border-border">
-              <Image
-                src="/logo.svg"
-                width={80}
-                height={44}
-                alt="TraumBad"
-                className="h-8 w-auto"
-              />
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="p-2 cursor-pointer text-dark/40 hover:text-dark transition-colors"
-                aria-label="Menü schließen"
+          /* Panel */
+          <motion.aside
+            key="panel"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 380, damping: 40 }}
+            className="fixed top-0 right-0 bottom-0 z-40 w-[min(84vw,340px)] bg-white shadow-2xl flex flex-col pt-[66px] lg:hidden"
+          >
+              <motion.nav
+                className="flex flex-col px-7 pt-6"
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: {},
+                  show: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } },
+                }}
               >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+                {navLinks.map((link) => (
+                  <motion.div
+                    key={link.href}
+                    variants={{
+                      hidden: { opacity: 0, x: 28 },
+                      show: { opacity: 1, x: 0, transition: { duration: 0.4, ease } },
+                    }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="group flex items-center justify-between py-4 border-b border-border/50 text-[1.15rem] font-display font-semibold text-dark hover:text-teal transition-colors cursor-pointer"
+                    >
+                      {link.label}
+                      <ArrowRight className="w-4 h-4 text-dark/25 -translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:text-teal transition-all duration-300" />
+                    </Link>
+                  </motion.div>
+                ))}
+              </motion.nav>
 
-            <nav className="flex flex-col px-6 py-6 gap-0">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-[16px] font-medium text-dark/70 hover:text-teal py-3 border-b border-border/40 transition-colors cursor-pointer"
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease, delay: 0.34 }}
+                className="mt-auto px-7 pb-9 flex flex-col gap-3"
+              >
+                <a
+                  href="tel:+436606304703"
+                  className="flex items-center gap-2.5 text-cta font-semibold py-1 cursor-pointer"
                 >
-                  {link.label}
+                  <Phone className="w-4 h-4 shrink-0" />
+                  +43 660 630 4703
+                </a>
+                <Link
+                  href="/kontakt"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 bg-cta text-white font-semibold py-3.5 px-4 rounded-md hover:bg-cta-dark transition-colors cursor-pointer shadow-sm"
+                >
+                  Angebot anfragen
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
-              ))}
-            </nav>
-
-            <div className="mt-auto px-6 pb-8 flex flex-col gap-3">
-              <a
-                href="tel:+436606304703"
-                className="flex items-center gap-2 text-cta font-semibold py-2 cursor-pointer"
-              >
-                <Phone className="w-4 h-4" />
-                +43 660 630 4703
-              </a>
-              <Link
-                href="/kontakt"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center bg-cta text-white font-semibold py-3.5 px-4 rounded-md hover:bg-cta-dark transition-colors cursor-pointer shadow-sm"
-              >
-                Angebot anfragen
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+                <p className="text-center text-xs text-muted-foreground pt-1">
+                  Festpreisgarantie · Inhabergeführt · Burgenland
+                </p>
+              </motion.div>
+          </motion.aside>,
+        ]}
+      </AnimatePresence>
     </>
   )
 }

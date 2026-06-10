@@ -254,7 +254,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-background pt-[66px] lg:flex-row lg:items-stretch">
+    <section className="relative flex flex-col overflow-hidden bg-background pt-[66px] lg:min-h-[100dvh] lg:flex-row lg:items-stretch">
 
       {/* Ambient depth — faint grid + soft teal glows so the warm-white isn't flat */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
