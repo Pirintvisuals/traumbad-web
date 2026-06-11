@@ -62,30 +62,29 @@ export function Staerken() {
           </motion.div>
         </div>
 
-        {/* Strength grid — numbered, typographic (no icon chips: those live in
-            Leistungen, and repeating them here made the two sections read as one). */}
+        {/* Strength grid — each Stärke gets its own icon chip instead of a number. */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border rounded-2xl overflow-hidden">
-          {staerken.map((s, i) => (
-            <motion.div
-              key={s.titel}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease }}
-              className="group relative bg-white p-7 lg:p-9 hover:bg-background transition-colors duration-300"
-            >
-              <div className="flex items-baseline gap-3 mb-4">
-                <span className="font-mono font-semibold text-sm text-teal tabular-nums">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="h-px flex-1 bg-border group-hover:bg-teal/30 transition-colors duration-300" />
-              </div>
-              <h3 className="font-display font-bold text-[1.2rem] text-dark mb-3 tracking-tight">
-                {s.titel}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed text-[0.95rem]">{s.text}</p>
-            </motion.div>
-          ))}
+          {staerken.map((s, i) => {
+            const Icon = s.icon
+            return (
+              <motion.div
+                key={s.titel}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease }}
+                className="group relative bg-white p-7 lg:p-9 hover:bg-background transition-colors duration-300"
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-teal/10 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
+                  <Icon className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <h3 className="font-display font-bold text-[1.2rem] text-dark mb-3 tracking-tight">
+                  {s.titel}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed text-[0.95rem]">{s.text}</p>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>

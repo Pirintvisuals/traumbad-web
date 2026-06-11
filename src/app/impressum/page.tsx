@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
+import { PageHero } from "@/components/PageHero"
 
 export const metadata: Metadata = {
   title: "Impressum | TraumBad Installations",
@@ -39,19 +40,14 @@ export default function ImpressumPage() {
     <main>
       <Navbar />
 
-      <section className="bg-dark pt-[100px] pb-14 lg:pt-[120px] lg:pb-16">
-        <div className="max-w-3xl mx-auto px-5 sm:px-8">
-          <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-teal">
-            Rechtliches
-          </span>
-          <h1 className="mt-4 font-display font-bold text-[clamp(2.2rem,5vw,3.4rem)] text-white leading-[1.05] tracking-tight">
-            Impressum
-          </h1>
-          <p className="mt-3 text-white/55">
-            Offenlegung gemäß §5 ECG und §25 Mediengesetz.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        crumbs={[{ label: "Start", href: "/" }, { label: "Impressum" }]}
+        eyebrow="Rechtliches"
+        title="Impressum"
+        description="Offenlegung gemäß §5 ECG und §25 Mediengesetz."
+        image="/traumbad-eu-badsanierung-badezimmer-renovierung-29-341x341.jpg"
+        imageAlt="Von TraumBad saniertes Badezimmer im Burgenland"
+      />
 
       <section className="bg-background py-16 lg:py-20">
         <div className="max-w-3xl mx-auto px-5 sm:px-8">

@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import Image from "next/image"
 import { ArrowRight, Phone, MapPin, Quote } from "lucide-react"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
+import { PageHero } from "@/components/PageHero"
 import { Reveal } from "@/components/Reveal"
 import { staerken } from "@/lib/staerken"
 
@@ -33,74 +33,21 @@ export default function UeberUnsPage() {
       <Navbar />
 
       {/* Page header */}
-      <section className="bg-background pt-[100px] pb-16 lg:pt-[120px] lg:pb-24">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8">
-          <Reveal y={12}>
-            <nav aria-label="Brotkrümel" className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-              <Link href="/" className="text-dark/40 hover:text-dark transition-colors">
-                Start
-              </Link>
-              <span className="text-dark/25">/</span>
-              <span className="text-teal font-medium">Über uns</span>
-            </nav>
-          </Reveal>
-          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center">
-            <div>
-              <Reveal delay={0.06}>
-                <h1 className="font-display font-bold text-[clamp(2.4rem,5.5vw,4.2rem)] text-dark leading-[1.04] tracking-tight mb-6">
-                  Klein, aber fein.
-                  <br />
-                  Seit über <span className="text-teal">zehn Jahren.</span>
-                </h1>
-              </Reveal>
-              <Reveal delay={0.12}>
-                <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mb-5">
-                  TraumBad ist ein inhabergeführter Betrieb aus Heiligenkreuz im Burgenland.
-                  Keine anonyme Firma, kein Callcenter — sondern ein fester Name, der für jedes
-                  Bad geradesteht: <strong className="text-dark font-semibold">Mate Nagy</strong>.
-                </p>
-              </Reveal>
-              <Reveal delay={0.18}>
-                <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mb-9">
-                  Vom ersten Plan bis zur letzten Fliese begleitet Sie eine Person — die, die
-                  auch die Arbeit macht.
-                </p>
-              </Reveal>
-              <Reveal delay={0.24}>
-                <div className="flex flex-wrap gap-3">
-                  <Link
-                    href="/kontakt"
-                    className="inline-flex items-center gap-2 bg-cta hover:bg-cta-dark text-white font-semibold px-6 py-3.5 rounded-md transition-colors shadow-sm"
-                  >
-                    Anfrage stellen
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <a
-                    href="tel:+436606304703"
-                    className="inline-flex items-center gap-2 border border-border hover:border-cta/40 text-cta font-semibold px-6 py-3.5 rounded-md transition-colors"
-                  >
-                    <Phone className="w-4 h-4" />
-                    +43 660 630 4703
-                  </a>
-                </div>
-              </Reveal>
-            </div>
-
-            <Reveal delay={0.2} className="hidden lg:block">
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-border shadow-xl">
-                <Image
-                  src="/traumbad-eu-badsanierung-badezimmer-renovierung-23-525x696.jpg"
-                  alt="Von TraumBad fertiggestelltes Badezimmer im Burgenland"
-                  fill
-                  sizes="(max-width: 1024px) 0px, 33vw"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        crumbs={[{ label: "Start", href: "/" }, { label: "Über uns" }]}
+        eyebrow="Über uns"
+        title={
+          <>
+            Klein, aber fein.
+            <br />
+            Seit über <span className="text-teal">zehn Jahren.</span>
+          </>
+        }
+        description="TraumBad ist ein inhabergeführter Betrieb aus Heiligenkreuz im Burgenland. Keine anonyme Firma, kein Callcenter — sondern ein fester Name, der für jedes Bad geradesteht: Mate Nagy."
+        image="/traumbad-eu-badsanierung-badezimmer-renovierung-23-525x696.jpg"
+        imageAlt="Von TraumBad fertiggestelltes Badezimmer im Burgenland"
+        priority
+      />
 
       {/* Stats strip */}
       <section className="bg-white border-y border-border">
